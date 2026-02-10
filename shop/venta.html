@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRUTWEB - Tu Frutería Online</title>
+    <link rel="stylesheet" href="../Styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><img src="../Imagenes/Frutweb logo.png" alt="FRUTWEB"></div>
+        <ul class="nav-links">
+            <li><a href="/home.html">INICIO</a></li>
+            <li><a href="/shop/frutas.html">FRUTA</a></li>
+            <li><a href="/shop/combo.html">COMBO</a></li>
+            <li><a href="/shop/verduras.html">VERDURA</a></li>
+        </ul>
+                    <div class="nav-icons">
+                <a href="../shop/favoritos.html" class="icon-link" title="Mis favoritos">
+                <i class="fa-regular fa-heart"></i>Favoritos</a>
+                 <a href="../shop/venta.html" class="icon-link" id="cart-icon" title="Mi carrito">
+                 <i class="fa-solid fa-cart-shopping"></i>Comprar</a>
+            <button class="btn-primary" id="auth-btn">CERRAR SESIÓN</button>            <div class="search-box">
+            <div class="search-box">
+                <input type="text" placeholder="Buscar...">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+        </div>
+    </nav>
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <img src="../Imagenes/Frutweb logo.png" alt="Logo Frutweb" class="login-logo">
+            
+            <div id="login-form">
+                <h2>Bienvenido de nuevo</h2>
+                <form onsubmit="login(event)">                   
+                    <div class="input-group">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" id="login-email" placeholder="Correo electrónico" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="login-password" placeholder="Crea tu contraseña" required>
+                    </div>
+                    <button type="submit" class="btn-primary-large">ENTRAR</button>
+                </form>
+                <p>¿No tienes cuenta? <a href="javascript:void(0)" onclick="toggleForm()">Regístrate aquí</a></p>
+            </div>
+
+            <div id="register-form" style="display: none;">
+                <h2>Crea tu cuenta</h2>
+                <form onsubmit="register(event)">
+                    <div class="input-group">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" id="reg-nombre" placeholder="Nombre completo" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" id="reg-email" placeholder="Correo electrónico" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="reg-password" placeholder="Crea tu contraseña" required>
+                    </div>
+                    <div class="policy-group">
+                        <input type="checkbox" id="policy" name="policy" required>
+                        <label for="policy">He leído y acepto la <a href="#">política de privacidad</a></label>
+                    </div>
+                    <button type="submit" class="btn-primary-large">REGISTRARME</button>
+                </form>
+                <p>¿Ya eres cliente? <a href="javascript:void(0)" onclick="toggleForm()">Inicia sesión</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="logoutModal" class="modal">
+        <div class="modal-content" style="text-align: center;padding: 40px; border-radius: 15px;">
+            <span class="close-btn" onclick="cerrarModalLogout()">&times;</span>
+            <img src="../Imagenes/Frutweb logo.png" alt="/Logo Frutweb" class="login-logo">
+            
+            <div id="logout-form-content" style="text-align: center;">
+                <h2>¿Estás seguro de que deseas salir?</h2>
+                <p style="margin-bottom: 20px; color: #555;">Tu sesión se cerrará de forma segura.</p>
+                
+                <button onclick="ejecutarSalidaBackend()" class="btn-primary-large">CONFIRMAR</button>
+                <button onclick="cerrarModalLogout()" class="btn-primary-large" style="background-color: #ccc; margin-top: 10px; color: #333;">CANCELAR</button>
+            </div>
+        </div>
+    </div>
+    <div id="despedidaModal" class="modal">
+    <div class="modal-content" style="text-align: center;padding: 40px; border-radius: 15px;">
+        <img src="../Imagenes/Frutweb logo.png" alt="Logo Frutweb" class="login-logo">
+        <h2 style="color: #2e7d32; margin-top: 20px;">¡HASTA PRONTO!</h2>
+        <p>Esperamos verte de nuevo muy pronto en FRUTWEB.</p>
+        <div style="margin-top: 30px;">
+            <i class="fa-solid fa-circle-check" style="font-size: 50px; color: #4CAF50;"></i>
+        </div>
+        </div>
+    </div>
+<footer class="footer">
+        <div class="footer-cols">
+            <div class="col">
+                <h4>Explorar</h4>
+                <ul>
+                    <li>Inicio</li>
+                    <li>Nuestra compañía</li>
+                    <li>Política de privacidad</li>
+                    <li>Términos y condiciones</li>
+                </ul>
+            </div>
+            <div class="col">
+                <h4>Síguenos</h4>
+                <div class="socials">
+                    <p><i class="fa-brands fa-facebook"></i> Facebook</p>
+                    <p><i class="fa-brands fa-youtube"></i> Youtube</p>
+                    <p><i class="fa-brands fa-instagram"></i>Instagram</p>
+                    
+                </div>
+            </div>
+            <div class="col">
+                <h4>Contacto</h4>
+                <p><i class="fa-solid fa-location-dot"></i> Calle XXXXXXXXX 00, Las Palmas</p>
+                <p><i class="fa-solid fa-envelope"></i> contacto@frutweb.es</p>
+                <p><i class="fa-solid fa-phone"></i> 666123456</p>
+            </div>
+        </div>
+        <p class="copy">Copyright © Frutweb - <a href="#">Aviso Legal</a></p>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>

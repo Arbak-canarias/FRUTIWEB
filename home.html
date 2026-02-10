@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRUTWEB - Tu Frutería Online</title>
+    <link rel="stylesheet" href="Styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><img src="Imagenes/Frutweb logo.png" alt="FRUTWEB"></div>
+        <ul class="nav-links">
+            <li><a href="home.html">INICIO</a></li>
+            <li><a href="home.html">FRUTA</a></li>
+            <li><a href="home.html">COMBO</a></li>
+            <li><a href="home.html">VERDURA</a></li>
+        </ul>
+        <div class="nav-icons">
+            <i class="fa-regular fa-heart"></i>
+            <i class="fa-solid fa-cart-shopping" id="cart-icon"></i>
+            <button class="btn-primary"  onclick="openModal('login')">INICIAR SESIÓN</button>
+            <div class="search-box">
+                <input type="text" placeholder="Buscar...">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1>¡Gran Promoción Especial!</h1>
+            <p>Descuento de hasta 20% en tu primera compra por tiempo limitado.</p>
+            <button class="btn-primary" onclick="openModal('register')">ÚNETE</button>
+        </div>
+    </header>
+
+    <section class="products-section">
+        <h2>COMPRAR FRUTA ONLINE</h2>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="Imagenes/fresa.jpg" alt="Fresa">
+                <h3>FRESA</h3>
+                <p>De Valsequillo km 0</p>
+                <button class="add-btn" onclick="intentarComprar('shop/frutas.html')">AÑADIR</button>
+            </div>            
+        <div class="product-card">
+            <img src="Imagenes/manzanas.avif" alt="Manzanas">
+            <h3>MANZANAS</h3>
+            <p>De valleseco</p>
+            <button class="add-btn" onclick="intentarComprar('shop/frutas.html')">AÑADIR</button>
+          
+        </div>
+        <div class="product-card">
+            <img src="Imagenes/kiwi.avif" alt="Kiwis">
+            <h3>KIWIS</h3>
+            <p>Fresquisimos</p>
+            <button class="add-btn" onclick="intentarComprar('shop/frutas.html')">AÑADIR</button>
+        </div>
+        <div class="product-card">
+            <img src="Imagenes/uvas.avif" alt="Uvas">
+            <h3>Uvas</h3>
+            <p>De Lanzarote</p>
+            <button class="add-btn" onclick="intentarComprar('shop/frutas.html')">AÑADIR</button>
+        </div>
+        </div>
+    </section>
+    <section class="products-section">
+        <h2>COMPRAR VERDURA ONLINE</h2>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="Imagenes/papas.avif" alt="Papas">
+                <h3>Papas</h3>
+                <p>Papas de la huerta Canaria</p>
+                <button class="add-btn" onclick="intentarComprar('shop/verduras.html')">AÑADIR</button>
+            </div>            
+        <div class="product-card">
+            <img src="Imagenes/cebollas.avif" alt="Cebollas">
+            <h3>CEBOLLAS</h3>
+            <p>Cebolla de Gáldar</p>
+            <button class="add-btn" onclick="intentarComprar('shop/verduras.html')">AÑADIR</button>
+        </div>
+        <div class="product-card">
+            <img src="Imagenes/batatas.avif" alt="Batatas">
+            <h3>BATATAS</h3>
+            <p>De km 0 a tu puchero</p>
+            <button class="add-btn" onclick="intentarComprar('shop/verduras.html')">AÑADIR</button>
+        </div>
+        <div class="product-card">
+            <img src="Imagenes/coliflor.avif" alt="Coliflor">
+            <h3>COLIFLOR</h3>
+            <p>Recién Cosechada</p>
+            <button class="add-btn" onclick="intentarComprar('shop/verduras.html')">AÑADIR</button>
+        </div>
+        </div>
+    </section>
+
+    <section class="info-section">
+        <h2>¿Por qué comprar fruta online en FRUTWEB?</h2>
+        <p>FRUTWEB es tu frutería online de confianza. Hemos crecido hasta tal envergadura que ahora puedes comprar la fruta y la verdura de temporada a través de nuestra web, para que puedas disfrutar de los productos de la huerta y del campo totalmente naturales y con la mayor garantía de frescura.
+        Somos conscientes de que el mercado de la fruta y la verdura por Internet ha ido creciendo cada vez más y el consumo de los productos naturales directos de la tierra a tu casa está cada vez más demandado. Por eso hemos querido aumentar nuestro catálogo y poder ofrecer una mayor variedad para que puedas comprar fruta y verdura online sin tener que moverte de casa y con total tranquilidad y confort. Nos comprometemos a que todos nuestros productos lleguen en perfecto estado a tu casa y en el menor tiempo posible.</p>
+        <h2>Somos garantía de Calidad</h2>
+        <p>Comprar fruta y verdura online está al alcance de tu mano y si no quieres gran cantidad de un sólo producto, también dispondremos de packs personalizados que puedas comprar poniéndote en contacto con nosotros o escogiendo los diferentes packs de combinaciones que estarán en nuestra web.
+           En determinadas fechas lanzamos promociones con descuentos especiales, así que debes estar muy atento a tu email para aprovecharte de todas las ofertas que tenemos. Si quieres estar al día de todo lo que sucede en FRUTWEB, de las novedades que tenemos, de cómo gestionamos las dudas de nuestros clientes, etc… sólo tienes que suscribirte a nuestra newsletter y además recibirás recetas completamente gratuitas que puedes hacer con cualquiera de nuestros productos.</p>
+        <div class="facility-image">
+            <div class="facility-image-wrapper">
+            <img src="Imagenes/instalaciones.avif" alt="Nuestras instalaciones">
+            <div class="overlay-text">Directo de nuestra huerta en Gran Canaria a tu mesa.</div>
+        </div>
+        </div>
+    </section>
+    <div id="loginModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <img src="Imagenes/Frutweb logo.png" alt="Logo Frutweb" class="login-logo">
+        
+        <div id="login-form">
+            <h2>Bienvenido de nuevo</h2>
+            <form onsubmit="login(event)">                   
+                    <div class="input-group">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id= "login-email" placeholder="Correo electrónico" required>
+                    </div>
+                    <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="login-password" placeholder="Crea tu contraseña" required>
+                </div>
+                    <button type="submit" class="btn-primary-large">ENTRAR</button>
+            </form>
+            <p>¿No tienes cuenta? <a href="javascript:void(0)" onclick="toggleForm()">Regístrate aquí</a></p>
+        </div>
+        <div id="logoutModal" class="modal">
+        <div class="modal-content logout-modal-content">
+            <span class="close-btn" onclick="closeLogoutModal()">&times;</span>
+            <img src="Imagenes/Frutweb logo.png" alt="Logo Frutweb" class="login-logo">
+            
+            <div id="logout-container">
+                <h2>¿Estás seguro de que deseas salir?</h2>
+                <p style="margin-bottom: 20px; color: #666;">Tu sesión se cerrará de forma segura.</p>
+                
+                <div class="logout-buttons">
+                    <button onclick="ejecutarSalida()" class="btn-primary-large">CONFIRMAR</button>
+                    <button onclick="closeLogoutModal()" class="btn-secondary-large" style="margin-top: 10px; background: #ddd; color: #333; border: none; width: 100%; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold;">CANCELAR</button>
+                </div>
+                    </div>
+                </div>
+        </div>
+        <div id="register-form" style="display: none;">
+            <h2>Crea tu cuenta</h2>
+            <form onsubmit="register(event)">
+                <div class="input-group">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" id="reg-nombre" placeholder="Nombre completo" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="reg-email" placeholder="Correo electrónico" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="reg-password" placeholder="Crea tu contraseña" required>
+                </div>
+                <div class="policy-group">
+                    <input type="checkbox" id="policy" name="policy" required>
+                    <label for="policy">He leído y acepto la <a href="#">política de privacidad</a></label>
+                </div>
+                <button type="submit" class="btn-primary-large">REGISTRARME</button>
+            </form>
+            <p>¿Ya eres cliente? <a href="javascript:void(0)" onclick="toggleForm()">Inicia sesión</a></p>
+            </div>
+        </div>
+    </div>
+    
+
+    <footer class="footer">
+        <div class="footer-cols">
+            <div class="col">
+                <h4>Explorar</h4>
+                <ul>
+                    <li>Inicio</li>
+                    <li>Nuestra compañía</li>
+                    <li>Política de privacidad</li>
+                    <li>Términos y condiciones</li>
+                </ul>
+            </div>
+            <div class="col">
+                <h4>Síguenos</h4>
+                <div class="socials">
+                    <p><i class="fa-brands fa-facebook"></i> Facebook</p>
+                    <p><i class="fa-brands fa-youtube"></i> Youtube</p>
+                    <p><i class="fa-brands fa-instagram"></i>Instagram</p>
+                    
+                </div>
+            </div>
+            <div class="col">
+                <h4>Contacto</h4>
+                <p><i class="fa-solid fa-location-dot"></i> Calle XXXXXXXXX 00, Las Palmas</p>
+                <p><i class="fa-solid fa-envelope"></i> contacto@frutweb.es</p>
+                <p><i class="fa-solid fa-phone"></i> 666123456</p>
+            </div>
+        </div>
+        <p class="copy">Copyright © Frutweb - <a href="#">Aviso Legal</a></p>
+    </footer>
+    <script>
+        function openModal(tipo) {
+            const modal = document.getElementById("loginModal");
+            const loginForm = document.getElementById("login-form");
+            const registerForm = document.getElementById("register-form");
+
+            modal.style.display = "flex"; // Usamos flex para centrar
+
+            if (tipo === 'login') {
+                loginForm.style.display = "block";
+                registerForm.style.display = "none";
+            } else {
+                loginForm.style.display = "none";
+                registerForm.style.display = "block";
+            }
+        }
+
+        function closeModal() {
+            document.getElementById("loginModal").style.display = "none";
+        }
+
+        function toggleForm() {
+            const loginForm = document.getElementById("login-form");
+            const registerForm = document.getElementById("register-form");
+            if (loginForm.style.display === "none") {
+                loginForm.style.display = "block";
+                registerForm.style.display = "none";
+            } else {
+                loginForm.style.display = "none";
+                registerForm.style.display = "block";
+            }
+        }
+
+        // --- LÓGICA DE COMPRA Y REDIRECCIÓN ---
+        function intentarComprar(destino) {
+            const user = localStorage.getItem("user");
+            
+            if (user) {
+                // Si ya está logueado, va directo a la tienda
+                window.location.href = destino;
+            } else {
+                // Si no está logueado, guardamos la intención de ir a shop/frutas.html
+                sessionStorage.setItem("redireccionPostLogin", destino);
+                openModal('login'); 
+            }
+        }
+
+        async function login(e) {
+            e.preventDefault();
+            const email = document.getElementById("login-email").value;
+            const password = document.getElementById("login-password").value;
+
+            try {
+                const res = await fetch("http://localhost:3000/api/auth/login", {
+                    method: "POST",
+                    credentials: "include",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    localStorage.setItem("user", JSON.stringify(data.user));
+                    
+                    // Verificamos si el usuario venía de darle a "Añadir"
+                    const rutaPendiente = sessionStorage.getItem("redireccionPostLogin");
+
+                    if (rutaPendiente) {
+                        // Si existe la ruta (shop/frutas.html), la borramos y vamos allí
+                        sessionStorage.removeItem("redireccionPostLogin");
+                        window.location.href = rutaPendiente;
+                    } else {
+                        // Si entró por el botón normal, va a su panel
+                        if (data.rol === "admin") {
+                            window.location.href = "dasboardcontrol.html";
+                        } else {
+                            window.location.href = "dashboardcliente.html";
+                        }
+                    }
+                } else {
+                    alert("Error: " + (data.message || "Credenciales incorrectas"));
+                }
+            } catch (error) {
+                console.error("Error en el login:", error);
+                alert("Error de conexión con el servidor (¿Está encendido el Backend?)");
+            }
+        }
+
+        // --- REGISTRO ---
+        async function register(e) {
+            e.preventDefault();
+            const nombre = document.getElementById("reg-nombre").value;
+            const email = document.getElementById("reg-email").value;
+            const password = document.getElementById("reg-password").value;
+
+            const res = await fetch("http://localhost:3000/api/auth/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ nombre, email, password })
+            });
+
+            if (res.ok) {
+                alert("Registro completado. Ahora puedes iniciar sesión.");
+                toggleForm();
+            } else {
+                const data = await res.json();
+                alert("Error en el registro: " + data.message);
+            }
+        }
+</script> 
+    <script src="script.js"></script>
+</body>
+</html>

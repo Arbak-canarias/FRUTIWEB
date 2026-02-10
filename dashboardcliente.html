@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRUTWEB - Tu Frutería Online</title>
+    <link rel="stylesheet" href="Styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><img src="Imagenes/Frutweb logo.png" alt="FRUTWEB"></div>
+        <ul class="nav-links">
+            <li><a href="home.html">INICIO</a></li>
+            <li><a href="shop/frutas.html">FRUTA</a></li>
+            <li><a href="shop/combo.html">COMBO</a></li>
+            <li><a href="shop/verduras.html">VERDURA</a></li>
+        </ul>
+        <div class="nav-icons">
+            <a href="../shop/favoritos.html" class="icon-link" title="Mis favoritos">
+                <i class="fa-regular fa-heart"></i>Favoritos</a>
+            <a href="../shop/venta.html" class="icon-link" id="cart-icon" title="Mi carrito">
+                 <i class="fa-solid fa-cart-shopping"></i>Comprar</a>
+            <button class="btn-primary" onclick="abrirModalLogout()">Cerrar SESIÓN</button>
+            <div class="search-box">
+                <input type="text" placeholder="Buscar...">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+        </div>
+        
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1>¡Gran Promoción Especial!</h1>
+            <p>Descuento de hasta 20% en tu primera compra por tiempo limitado.</p>
+            <!-- <button class="btn-primary" onclick="openModal('register')">ÚNETE</button> -->
+        </div>
+    </header>
+
+    <section class="products-section">
+        <h2>COMPRAR FRUTA ONLINE</h2>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="Imagenes/fresa.jpg" alt="Fresa">
+                <h3>FRESA</h3>
+                <p>De Valsequillo km 0</p>
+                <button class="add-btn">AÑADIR</button>
+            </div>            
+        <div class="product-card">
+            <img src="Imagenes/manzanas.avif" alt="Manzanas">
+            <h3>MANZANAS</h3>
+            <p>De valleseco</p>
+            <button class="add-btn">AÑADIR</button>
+        </div>
+        <div class="product-card">
+            <img src="Imagenes/kiwi.avif" alt="Kiwis">
+            <h3>KIWIS</h3>
+            <p>Fresquisimos</p>
+            <button class="add-btn">AÑADIR</button>
+        </div>
+        <div class="product-card">
+            <img src="Imagenes/uvas.avif" alt="Uvas">
+            <h3>Uvas</h3>
+            <p>De Lanzarote</p>
+            <button class="add-btn">AÑADIR</button>
+        </div>
+        </div>
+    </section>
+    <section class="products-section">
+        <h2>COMPRAR VERDURA ONLINE</h2>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="Imagenes/papas.avif" alt="Papas">
+                <h3>Papas</h3>
+                <p>Papas de la huerta Canaria</p>
+                <button class="add-btn">AÑADIR</button>
+            </div>            
+        <div class="product-card">
+            <img src="Imagenes/cebollas.avif" alt="Cebollas">
+            <h3>CEBOLLAS</h3>
+            <p>Cebolla de Gáldar</p>
+            <button class="add-btn">AÑADIR</button>
+        </div>
+        <div class="product-card">
+            <img src="Imagenes/batatas.avif" alt="Batatas">
+            <h3>BATATAS</h3>
+            <p>De km 0 a tu puchero</p>
+            <button class="add-btn">AÑADIR</button>
+        </div>
+        <div class="product-card">
+            <img src="Imagenes/coliflor.avif" alt="Coliflor">
+            <h3>COLIFLOR</h3>
+            <p>Recién Cosechada</p>
+            <button class="add-btn">AÑADIR</button>
+        </div>
+        </div>
+    </section>
+
+    <section class="info-section">
+        <h2>¿Por qué comprar fruta online en FRUTWEB?</h2>
+        <p>FRUTWEB es tu frutería online de confianza. Hemos crecido hasta tal envergadura que ahora puedes comprar la fruta y la verdura de temporada a través de nuestra web, para que puedas disfrutar de los productos de la huerta y del campo totalmente naturales y con la mayor garantía de frescura.
+        Somos conscientes de que el mercado de la fruta y la verdura por Internet ha ido creciendo cada vez más y el consumo de los productos naturales directos de la tierra a tu casa está cada vez más demandado. Por eso hemos querido aumentar nuestro catálogo y poder ofrecer una mayor variedad para que puedas comprar fruta y verdura online sin tener que moverte de casa y con total tranquilidad y confort. Nos comprometemos a que todos nuestros productos lleguen en perfecto estado a tu casa y en el menor tiempo posible.</p>
+        <h2>Somos garantía de Calidad</h2>
+        <p>Comprar fruta y verdura online está al alcance de tu mano y si no quieres gran cantidad de un sólo producto, también dispondremos de packs personalizados que puedas comprar poniéndote en contacto con nosotros o escogiendo los diferentes packs de combinaciones que estarán en nuestra web.
+           En determinadas fechas lanzamos promociones con descuentos especiales, así que debes estar muy atento a tu email para aprovecharte de todas las ofertas que tenemos. Si quieres estar al día de todo lo que sucede en FRUTWEB, de las novedades que tenemos, de cómo gestionamos las dudas de nuestros clientes, etc… sólo tienes que suscribirte a nuestra newsletter y además recibirás recetas completamente gratuitas que puedes hacer con cualquiera de nuestros productos.</p>
+        <div class="facility-image">
+            <img src="Imagenes/instalaciones.avif" alt="Nuestras instalaciones">
+            <div class="overlay-text">Directo de nuestra huerta en Gran Canaria a tu mesa.</div>
+        </div>
+    </section>
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <img src="Imagenes/Frutweb logo.png" alt="Logo Frutweb" class="login-logo">
+            
+            <div id="login-form">
+                <h2>Bienvenido de nuevo</h2>
+                <form onsubmit="login(event)">                   
+                    <div class="input-group">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" id="login-email" placeholder="Correo electrónico" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="login-password" placeholder="Crea tu contraseña" required>
+                    </div>
+                    <button type="submit" class="btn-primary-large">ENTRAR</button>
+                </form>
+                <p>¿No tienes cuenta? <a href="javascript:void(0)" onclick="toggleForm()">Regístrate aquí</a></p>
+            </div>
+
+            <div id="register-form" style="display: none;">
+                <h2>Crea tu cuenta</h2>
+                <form onsubmit="register(event)">
+                    <div class="input-group">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" id="reg-nombre" placeholder="Nombre completo" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" id="reg-email" placeholder="Correo electrónico" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="reg-password" placeholder="Crea tu contraseña" required>
+                    </div>
+                    <div class="policy-group">
+                        <input type="checkbox" id="policy" name="policy" required>
+                        <label for="policy">He leído y acepto la <a href="#">política de privacidad</a></label>
+                    </div>
+                    <button type="submit" class="btn-primary-large">REGISTRARME</button>
+                </form>
+                <p>¿Ya eres cliente? <a href="javascript:void(0)" onclick="toggleForm()">Inicia sesión</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="logoutModal" class="modal">
+        <div class="modal-content" style="text-align: center;padding: 40px; border-radius: 15px;">
+            <span class="close-btn" onclick="cerrarModalLogout()">&times;</span>
+            <img src="Imagenes/Frutweb logo.png" alt="Logo Frutweb" class="login-logo">
+            
+            <div id="logout-form-content" style="text-align: center;">
+                <h2>¿Estás seguro de que deseas salir?</h2>
+                <p style="margin-bottom: 20px; color: #555;">Tu sesión se cerrará de forma segura.</p>
+                
+                <button onclick="ejecutarSalidaBackend()" class="btn-primary-large">CONFIRMAR</button>
+                <button onclick="cerrarModalLogout()" class="btn-primary-large" style="background-color: #ccc; margin-top: 10px; color: #333;">CANCELAR</button>
+            </div>
+        </div>
+    </div>
+    <div id="despedidaModal" class="modal">
+    <div class="modal-content" style="text-align: center;padding: 40px; border-radius: 15px;">
+        <img src="Imagenes/Frutweb logo.png" alt="Logo Frutweb" class="login-logo">
+        <h2 style="color: #2e7d32; margin-top: 20px;">¡HASTA PRONTO!</h2>
+        <p>Esperamos verte de nuevo muy pronto en FRUTWEB.</p>
+        <div style="margin-top: 30px;">
+            <i class="fa-solid fa-circle-check" style="font-size: 50px; color: #4CAF50;"></i>
+        </div>
+        </div>
+    </div>
+    
+
+    <footer class="footer">
+        <div class="footer-cols">
+            <div class="col">
+                <h4>Explorar</h4>
+                <ul>
+                    <li>Inicio</li>
+                    <li>Nuestra compañía</li>
+                    <li>Política de privacidad</li>
+                    <li>Términos y condiciones</li>
+                </ul>
+            </div>
+            <div class="col">
+                <h4>Síguenos</h4>
+                <div class="socials">
+                    <p><i class="fa-brands fa-facebook"></i> Facebook</p>
+                    <p><i class="fa-brands fa-youtube"></i> Youtube</p>
+                    <p><i class="fa-brands fa-instagram"></i>Instagram</p>
+                    
+                </div>
+            </div>
+            <div class="col">
+                <h4>Contacto</h4>
+                <p><i class="fa-solid fa-location-dot"></i> Calle XXXXXXXXX 00, Las Palmas</p>
+                <p><i class="fa-solid fa-envelope"></i> contacto@frutweb.es</p>
+                <p><i class="fa-solid fa-phone"></i> 666123456</p>
+            </div>
+        </div>
+        <p class="copy">Copyright © Frutweb - <a href="#">Aviso Legal</a></p>
+    </footer>
+  <!--  <script>
+     function abrirModalLogout() {
+    document.getElementById("logoutModal").style.display = "flex";
+}
+
+function cerrarModalLogout() {
+    document.getElementById("logoutModal").style.display = "none";
+}
+
+// Función que conecta con el Backend
+async function ejecutarSalidaBackend() {
+    try {
+        cerrarModalLogout();
+        const res = await fetch("http://localhost:3000/api/auth/logout", {
+            method: "POST",
+            credentials: "include"
+        });
+
+        if (res.ok) {
+            // 1. Limpiar datos locales
+            localStorage.removeItem("user");
+
+            // 2. Mensaje de despedida (puedes usar un alert o un texto en el modal)
+            const despedida= document.getElementById("despedidaModal").style.display = "flex";
+            setTimeout(() => {
+                window.location.href = "home.html";
+            }, 6000);
+
+             } else {
+            alert("Error al cerrar sesión");
+            }
+            // 3. Redirigir al inicio
+            // window.location.href = "home.html";
+        
+    } catch (error) {
+        console.error("Error al cerrar sesión:", error);
+        localStorage.removeItem("user");
+        document.getElementById("despedidaModal").style.display = "flex";
+        window.location.href = "home.html";
+    }
+}
+
+// Cerrar modales si se hace clic fuera
+window.onclick = function(event) {
+    const logoutModal = document.getElementById('logoutModal');
+    const loginModal = document.getElementById('loginModal');
+    if (event.target == logoutModal) cerrarModalLogout();
+    if (event.target == loginModal) closeModal(); // Asumiendo que closeModal existe en tu script.js
+}
+
+</script> -->
+    <script src="script.js"></script>
+</body>
+</html>
