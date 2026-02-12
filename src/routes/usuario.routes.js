@@ -1,17 +1,10 @@
 import express from "express";
-import {
-  getUsuarios,
-  crearUsuario,
-  actualizarUsuario,
-  eliminarUsuario
-} from "../controllers/usuario.controller.js";
-import { isAuth, isAdmin } from "../middlewares/auth.middleware.js";
+import { getUsuarios, eliminarUsuario } from "../controllers/usuario.controller.js";
+import { authJWT, isAdmin } from "../middlewares/auth.jwt.js";
 
 const router = express.Router();
 
-router.get("/", isAuth, isAdmin, getUsuarios);
-router.post("/", isAuth, isAdmin, crearUsuario);
-router.put("/:id", isAuth, isAdmin, actualizarUsuario);
-router.delete("/:id", isAuth, isAdmin, eliminarUsuario);
+router.get("/", authJWT, isAdmin, getUsuarios);
+router.delete("/:id", authJWT, isAdmin, eliminarUsuario);
 
 export default router;

@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcrypt"; 
 import { UsuarioModel } from "../models/usuario.model.js";
 
 export const getUsuarios = async (req, res) => {
@@ -23,7 +23,7 @@ export const crearUsuario = async (req, res) => {
     consentimiento_datos,
     fecha_consentimiento: new Date(),
     acepta_marketing: acepta_marketing ? 1 : 0,
-    creador: req.session.user.id
+    creador: req.user.id
   });
 
   res.json({ message: "Usuario creado" });
@@ -38,7 +38,7 @@ export const actualizarUsuario = async (req, res) => {
     email,
     rol,
     estado,
-    modificador: req.session.user.id
+    modificador: req.user.id
   });
 
   res.json({ message: "Usuario actualizado" });
@@ -47,6 +47,6 @@ export const actualizarUsuario = async (req, res) => {
 export const eliminarUsuario = async (req, res) => {
   const { id } = req.params;
 
-  await UsuarioModel.softDelete(id, req.session.user.id);
+  await UsuarioModel.softDelete(id, req.user.id);
   res.json({ message: "Usuario desactivado" });
 };

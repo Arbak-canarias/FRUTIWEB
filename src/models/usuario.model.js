@@ -4,7 +4,7 @@ export const UsuarioModel = {
   findAll: async () => {
     const [rows] = await pool.query(
       "SELECT id_usuario, nombre, email, rol, estado, ultimo_login, f_creacion FROM usuario"
-    );
+    );id_usuario, nombre, email, rol, estado, f_creacion, ultimo_login, consentimiento_datos, acepta_marketing, fecha_consentimiento
     return rows;
   },
   findByEmail: async (email) => {

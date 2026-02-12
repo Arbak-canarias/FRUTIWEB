@@ -1,60 +1,65 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import { UsuarioModel } from "../models/usuario.model.js";
 
+const SECRET_KEY = "frutweb_secret_key_123";
+
 export const login = async (req, res) => {
-  try{
-  const { email, password } = req.body;
-  const user = await UsuarioModel.findByEmail(email);
-  if (!user) return res.status(401).json({ error: "Usuario no encontrado" });
+  try {
+    const { email, password } = req.body;
 
-  const ok = await bcrypt.compare(password, user.password);
-  if (!ok) return res.status(401).json({ error: "Credenciales incorrectas" });
+    const user = await UsuarioModel.findByEmail(email);
+    if (!user) return res.status(401).json({ error: "Usuario no encontrado" });
 
-  req.session.user = {
-    id: user.id_usuario,
-    rol: user.rol,
-    nombre: user.nombre
-  };
+    const ok = await bcrypt.compare(password, user.password);
+    if (!ok) return res.status(401).json({ error: "Credenciales incorrectas" });
 
-  await UsuarioModel.updateLastLogin(user.id_usuario);
+    const token = jwt.sign(
+      { id: user.id_usuario, rol: user.rol, nombre: user.nombre },
+      SECRET_KEY,
+      { expiresIn: "4h" }
+    );
 
-  res.json({ message: "Login correcto", rol: user.rol,
-    user: { nombre: user.nombre, rol: user.rol }});
+    await UsuarioModel.updateLastLogin(user.id_usuario);
+
+    return res.json({
+      message: "Login correcto",
+      token,
+      user: {
+        id: user.id_usuario,
+        nombre: user.nombre,
+        rol: user.rol,
+        email: user.email
+      }
+    });
+
   } catch (error) {
     console.error("Error en login:", error);
     res.status(500).json({ message: "Error interno del servidor" });
-  }  
-
+  }
 };
 
 export const logout = (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).json({ message: "No se pudo cerrar la sesión" });
-    }
-    res.clearCookie('connect.sid'); 
-    res.json({ message: "Sesión cerrada correctamente en el servidor" });
-  });
+  // Con JWT no hay sesión que destruir en el backend
+  res.json({ message: "Logout correcto (el cliente debe borrar el token)" });
 };
+
 export const me = (req, res) => {
-  if (!req.session.user) return res.status(401).json({ auth: false });
-  res.json(req.session.user);
+  res.json(req.user); // viene del middleware JWT
 };
+
 export const register = async (req, res) => {
   try {
     const { nombre, email, password } = req.body;
 
-    // 1. Cifrar la contraseña (Trazabilidad: Seguridad)
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
 
-    // 2. Guardar en la base de datos
-    // Ajustamos los datos para que coincidan con tu UsuarioModel.create
     await UsuarioModel.create({
       nombre,
       email,
       passwordHash,
-      rol: 'cliente', // Por defecto se registran como clientes
+      rol: "cliente",
       consentimiento_datos: 1,
       fecha_consentimiento: new Date(),
       acepta_marketing: 0,

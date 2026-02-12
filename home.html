@@ -129,6 +129,7 @@
             </form>
             <p>¿No tienes cuenta? <a href="javascript:void(0)" onclick="toggleForm()">Regístrate aquí</a></p>
         </div>
+    
         <div id="logoutModal" class="modal">
         <div class="modal-content logout-modal-content">
             <span class="close-btn" onclick="closeLogoutModal()">&times;</span>
@@ -139,7 +140,7 @@
                 <p style="margin-bottom: 20px; color: #666;">Tu sesión se cerrará de forma segura.</p>
                 
                 <div class="logout-buttons">
-                    <button onclick="ejecutarSalida()" class="btn-primary-large">CONFIRMAR</button>
+                    <button onclick="ejecutarSalidaBackend()" class="btn-primary-large">CONFIRMAR</button>
                     <button onclick="closeLogoutModal()" class="btn-secondary-large" style="margin-top: 10px; background: #ddd; color: #333; border: none; width: 100%; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold;">CANCELAR</button>
                 </div>
                     </div>
@@ -202,6 +203,16 @@
         <p class="copy">Copyright © Frutweb - <a href="#">Aviso Legal</a></p>
     </footer>
     <script>
+        function guardarSesion(token, user) {
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
+    }
+
+    function borrarSesion() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        window.location.href = "home.html";
+    }
         function openModal(tipo) {
             const modal = document.getElementById("loginModal");
             const loginForm = document.getElementById("login-form");
@@ -236,17 +247,15 @@
 
         // --- LÓGICA DE COMPRA Y REDIRECCIÓN ---
         function intentarComprar(destino) {
-            const user = localStorage.getItem("user");
-            
-            if (user) {
-                // Si ya está logueado, va directo a la tienda
-                window.location.href = destino;
-            } else {
-                // Si no está logueado, guardamos la intención de ir a shop/frutas.html
-                sessionStorage.setItem("redireccionPostLogin", destino);
-                openModal('login'); 
-            }
-        }
+                     const token = localStorage.getItem("token");
+        
+                    if (token) {
+                        window.location.href = destino;
+                    } else {
+                        sessionStorage.setItem("redireccionPostLogin", destino);
+                        openModal('login'); 
+                    }
+                }
 
         async function login(e) {
             e.preventDefault();
@@ -256,7 +265,7 @@
             try {
                 const res = await fetch("http://localhost:3000/api/auth/login", {
                     method: "POST",
-                    credentials: "include",
+                   // credentials: "include",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email, password })
                 });
@@ -264,23 +273,15 @@
                 const data = await res.json();
 
                 if (res.ok) {
+                    localStorage.setItem("token", data.token);
                     localStorage.setItem("user", JSON.stringify(data.user));
-                    
-                    // Verificamos si el usuario venía de darle a "Añadir"
-                    const rutaPendiente = sessionStorage.getItem("redireccionPostLogin");
-
-                    if (rutaPendiente) {
-                        // Si existe la ruta (shop/frutas.html), la borramos y vamos allí
-                        sessionStorage.removeItem("redireccionPostLogin");
-                        window.location.href = rutaPendiente;
-                    } else {
-                        // Si entró por el botón normal, va a su panel
-                        if (data.rol === "admin") {
-                            window.location.href = "dasboardcontrol.html";
+                             // Si entró por el botón normal, va a su panel
+                        if (data.user && data.user.rol.toLowerCase() === "admin") {
+                            window.location.href = "dashboardcontrol.html";
                         } else {
                             window.location.href = "dashboardcliente.html";
                         }
-                    }
+                    
                 } else {
                     alert("Error: " + (data.message || "Credenciales incorrectas"));
                 }
@@ -311,6 +312,21 @@
                 alert("Error en el registro: " + data.message);
             }
         }
+        function revisarEstadoSesion() {
+        const userStr = localStorage.getItem("user");
+        if (userStr) {
+            const user = JSON.parse(userStr);
+            const loginBtn = document.querySelector(".nav-icons .btn-primary");
+            if (loginBtn) {
+                loginBtn.textContent = `HOLA, ${user.nombre.toUpperCase()}`;
+                loginBtn.onclick = () => {
+                    // Si hace clic en su nombre, podemos enviarlo a su dashboard o preguntar si quiere cerrar sesión
+                    const destino = user.rol === 'admin' ? 'dashboardcontrol.html' : 'dashboardcliente.html';
+                    window.location.href = destino;
+                };
+            }
+        }
+    }
 </script> 
     <script src="script.js"></script>
 </body>

@@ -107,6 +107,11 @@
         </div>
     </div>
     <section class="products-section">
+    <h2>COMPRAR FRUTA ONLINE</h2>
+    <div id="contenedor-frutas" class="product-grid">
+    </div>
+    </section>
+    <!--<section class="products-section">
         <h2>COMPRAR FRUTA ONLINE</h2>
         <div class="product-grid">
             <div class="product-card">
@@ -162,7 +167,7 @@
             </div>
         </div>
         </div>
-    </section>
+    </section> -->
     
     <footer class="footer">
         <div class="footer-cols">
@@ -193,7 +198,81 @@
         </div>
         <p class="copy">Copyright © Frutweb - <a href="#">Aviso Legal</a></p>
     </footer>
-   
+    <script>
+               
+    document.addEventListener("DOMContentLoaded", () => {
+        cargarFrutas();
+    });
+
+   async function cargarFrutas() {
+    const contenedor = document.getElementById("contenedor-frutas");
+    const token = localStorage.getItem('token'); 
+
+    // Verificación de seguridad antes de empezar
+    if (!contenedor) {
+        console.error("No se encontró el contenedor 'contenedor-frutas'");
+        return;
+    }
+
+    try {
+        // ÚNICA PETICIÓN: Enviamos el token en los headers
+        const response = await fetch("http://localhost:3000/api/productos", {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        // Convertimos la respuesta a JSON
+        const data = await response.json();
+
+        // 1. Validar si el servidor rechazó la petición por falta de token
+        if (!response.ok || data.error) {
+            contenedor.innerHTML = `<p style="text-align:center;">Debes iniciar sesión para ver los productos.</p>`;
+            return;
+        }
+
+        // 2. FILTRAR: Solo productos cuya categoría sea 'fruta'
+        // (Usamos 'data' directamente porque ya es el array de productos)
+        const frutas = data.filter(p => p.categoria && p.categoria.toLowerCase() === 'fruta');
+
+        // 3. Limpiar el contenedor
+        contenedor.innerHTML = "";
+
+        if (frutas.length === 0) {
+            contenedor.innerHTML = "<p>No hay frutas disponibles en este momento.</p>";
+            return;
+        }
+
+        // 4. Dibujar las tarjetas
+        frutas.forEach(fruta => {
+            const card = document.createElement("div");
+            card.className = "product-card";
+
+            card.innerHTML = `
+                <img src="${fruta.imagen_url || '../Imagenes/fresa.jpg'}" alt="${fruta.nombre}">
+                <h3>${fruta.nombre.toUpperCase()}</h3>
+                <p>${fruta.descripcion || 'Producto fresco local'}</p>
+                <div class="precio-tag">${fruta.precio} €</div>
+                <div class="card-buttons">
+                    <button class="btn-large heart" title="Me gusta" onclick="agregarFavorito(${fruta.id_producto})">
+                        <i class="fa-regular fa-heart"></i> Me gusta
+                    </button>
+                    <button class="btn-large cart" title="Comprar" onclick="agregarAlCarrito(${fruta.id_producto})">
+                        <i class="fa-solid fa-cart-shopping"></i> Comprar
+                    </button>
+                </div>
+            `;
+            contenedor.appendChild(card);
+        });
+
+    } catch (error) {
+        console.error("Error detallado:", error);
+        contenedor.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: red;">Error al conectar con la base de datos.</p>`;
+    }
+}
+   </script>
     <script src="../script.js"></script>
 </body>
 </html>
