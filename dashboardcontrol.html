@@ -17,11 +17,14 @@
             <li><a href="shop/verduras.html">VERDURA</a></li>
         </ul>
         <div class="nav-icons">
-            <a href="../shop/favoritos.html" class="icon-link" title="Mis favoritos">
-                <i class="fa-regular fa-heart"></i>Favoritos</a>
+             <a href="../shop/favoritos.html" class="icon-link" title="Mis favoritos">
+                <i class="fa-regular fa-heart"></i>
+                Favoritos <span id="count-fav" class="badge">0</span> </a> <!--para cambiar colores ir CSS .badge-->
             <a href="../shop/venta.html" class="icon-link" id="cart-icon" title="Mi carrito">
-                 <i class="fa-solid fa-cart-shopping"></i>Comprar</a>
-            <button class="btn-primary" onclick="abrirModalLogout()">Cerrar SESIÓN</button>
+                <i class="fa-solid fa-cart-shopping"></i>
+                Comprar <span id="count-cart" class="badge">0</span>  </a>
+            <button id="btn-mi-perfil" class="btn-primary" style="display: none;">MI PERFIL</button>    
+            <button id="btn-logout" class="btn-primary" onclick="abrirModalLogout()">CERRAR SESIÓN</button>
             <div class="search-box">
                 <input type="text" placeholder="Buscar...">
                 <i class="fa-solid fa-magnifying-glass"></i>
@@ -272,8 +275,7 @@
                 return;
             }
 
-            const usuario = await res.json();
-            console.log("Bienvenido:", usuario.nombre);
+            const usuario = await res.json();           
 
             // SOLO SI LA SESIÓN ES VÁLIDA, CARGAMOS LOS DATOS
             await cargarProductos();
@@ -284,32 +286,36 @@
            
         }
     }
-            async function cargarProductos() {
-            const res = await fetch("http://localhost:3000/api/productos", {
-                headers: getAuthHeaders()
-            });
-            if (!res.ok) {
-                const err = await res.json();
-                console.error("Error API productos:", err);
-                alert(err.error || "No se pudieron cargar los productos");
-                return;
-            }
-            const productos = await res.json();
-            const tbody = document.getElementById("lista-productos");
+   async function cargarProductos() {
+    const res = await fetch("http://localhost:3000/api/productos/public", {
+        headers: getAuthHeaders()
+    });
+    
+    if (!res.ok) return;
 
-            tbody.innerHTML = productos.map(p => `
-                <tr>
-                <td>${p.nombre}</td>
-                <td>${p.categoria}</td>
-                <td>${p.stock}</td>
-                <td>${p.precio} €</td>
-                <td>${p.f_creacion ?? "-"}</td>
-                <td>
-                    <i class="fa-solid fa-trash" onclick="eliminarProducto(${p.id_producto})"></i>
-                </td>
-                </tr>
-            `).join("");
-            }
+    const productos = await res.json();
+    const tbody = document.getElementById("lista-productos");
+    if (!tbody) return;
+
+    if (productos.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">No hay productos registrados</td></tr>`;
+        return;
+    }
+
+    // Generamos las filas asegurando que coincidan con las 5 columnas + acciones
+    tbody.innerHTML = productos.map(p => `
+        <tr>
+            <td>${p.nombre}</td>
+            <td>${p.categoria}</td>
+            <td>${p.stock}</td>
+            <td>${p.precio} €</td>
+            <td>${p.f_creacion ? new Date(p.f_creacion).toLocaleDateString() : "-"}</td>
+            <td>
+                <i class="fa-solid fa-trash" style="cursor:pointer; color:red" onclick="eliminarProducto(${p.id_producto})"></i>
+            </td>
+        </tr>
+    `).join("");
+}
 
         async function cargarUsuarios() {
             const res = await fetch("http://localhost:3000/api/usuarios", {
@@ -320,7 +326,7 @@
             const usuarios = await res.json();
             const tbody = document.getElementById("tabla-usuarios-body");
             tbody.innerHTML = usuarios.map(u => {
-                console.log("Usuario desde la API:", u);
+              
             // Formatear fechas de forma segura
             const fechaLogin = u.ultimo_login ? new Date(u.ultimo_login).toLocaleString() : "Nunca";
             const fechaCreacion = u.f_creacion ? new Date(u.f_creacion).toLocaleDateString() : "-";
@@ -377,13 +383,12 @@
             cargarUsuarios();
             }
             function showSection(sectionId) {
-                // 1. Ocultar el mensaje de bienvenida
+               
                 const welcomeMsg = document.getElementById('welcome-msg');
                 if (welcomeMsg) welcomeMsg.style.display = 'none';
 
                 // 2. Ocultar todas las secciones administrativas
-                const sections = document.querySelectorAll('.admin-section');
-                sections.forEach(section => {
+                document.querySelectorAll('.admin-section').forEach(section => {
                     section.style.display = 'none';
                 });
 
@@ -391,7 +396,13 @@
                 const targetSection = document.getElementById(sectionId);
                 if (targetSection) {
                     targetSection.style.display = 'block';
-                }
+                }               
+
+                if (sectionId === "usuarios") {
+                    cargarUsuarios();
+                }if (sectionId === "productos") {
+                    cargarProductos();
+                }    
             }
             
             document.getElementById("form-producto").addEventListener("submit", async (e) => {

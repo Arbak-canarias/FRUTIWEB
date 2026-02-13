@@ -17,11 +17,14 @@
             <li><a href="shop/verduras.html">VERDURA</a></li>
         </ul>
         <div class="nav-icons">
-            <a href="../shop/favoritos.html" class="icon-link" title="Mis favoritos">
-                <i class="fa-regular fa-heart"></i>Favoritos</a>
+             <a href="../shop/favoritos.html" class="icon-link" title="Mis favoritos">
+                <i class="fa-regular fa-heart"></i>
+                Favoritos <span id="count-fav" class="badge">0</span> </a> <!--para cambiar colores ir CSS .badge-->
             <a href="../shop/venta.html" class="icon-link" id="cart-icon" title="Mi carrito">
-                 <i class="fa-solid fa-cart-shopping"></i>Comprar</a>
-            <button class="btn-primary" onclick="abrirModalLogout()">Cerrar SESIÓN</button>
+                <i class="fa-solid fa-cart-shopping"></i>
+                Comprar <span id="count-cart" class="badge">0</span>  </a>
+            <button id="btn-mi-perfil" class="btn-primary" style="display: none;">MI PERFIL</button>    
+            <button id="btn-logout" class="btn-primary" onclick="abrirModalLogout()">CERRAR SESIÓN</button>
             <div class="search-box">
                 <input type="text" placeholder="Buscar...">
                 <i class="fa-solid fa-magnifying-glass"></i>
@@ -37,8 +40,39 @@
             <!-- <button class="btn-primary" onclick="openModal('register')">ÚNETE</button> -->
         </div>
     </header>
-
+     <section class="info-section">
+        <h2>¿Por qué comprar fruta online en FRUTWEB?</h2>
+        <p>FRUTWEB es tu frutería online de confianza. Hemos crecido hasta tal envergadura que ahora puedes comprar la fruta y la verdura de temporada a través de nuestra web, para que puedas disfrutar de los productos de la huerta y del campo totalmente naturales y con la mayor garantía de frescura.
+        Somos conscientes de que el mercado de la fruta y la verdura por Internet ha ido creciendo cada vez más y el consumo de los productos naturales directos de la tierra a tu casa está cada vez más demandado. Por eso hemos querido aumentar nuestro catálogo y poder ofrecer una mayor variedad para que puedas comprar fruta y verdura online sin tener que moverte de casa y con total tranquilidad y confort. Nos comprometemos a que todos nuestros productos lleguen en perfecto estado a tu casa y en el menor tiempo posible.</p>
+        
+    </section>
     <section class="products-section">
+        <h2>COMPRAR FRUTA ONLINE</h2>
+        <div id="contenedor-frutas" class="product-grid">
+        </div>
+    </section>
+    <section class="info-section">
+        <h2>Somos garantía de Calidad</h2>
+        <p>Comprar fruta y verdura online está al alcance de tu mano y si no quieres gran cantidad de un sólo producto, también dispondremos de packs personalizados que puedas comprar poniéndote en contacto con nosotros o escogiendo los diferentes packs de combinaciones que estarán en nuestra web.
+           En determinadas fechas lanzamos promociones con descuentos especiales, así que debes estar muy atento a tu email para aprovecharte de todas las ofertas que tenemos. Si quieres estar al día de todo lo que sucede en FRUTWEB, de las novedades que tenemos, de cómo gestionamos las dudas de nuestros clientes, etc… sólo tienes que suscribirte a nuestra newsletter y además recibirás recetas completamente gratuitas que puedes hacer con cualquiera de nuestros productos.</p>
+      
+    </section>
+    <section class="products-section">
+        <h2>COMPRAR VERDURA ONLINE</h2>
+        <div id="contenedor-verduras" class="product-grid"></div>
+    </section>
+    <section class="products-section">
+        <h2>COMPRAR COMBO</h2>
+        <div id="contenedor-combo" class="product-grid"></div>
+    </section>
+    <!--Notificaciones de compra y favoritos-->
+    <div id="notificacion-frutweb" class="toast-personalizado">
+        <div class="toast-content">
+            <img src="../Imagenes/Frutweb logo.png" alt="Logo" class="toast-logo">
+            <p id="toast-mensaje">¡Añadido con éxito!</p>
+        </div>
+    </div>
+    <!-- <section class="products-section">
         <h2>COMPRAR FRUTA ONLINE</h2>
         <div class="product-grid">
             <div class="product-card">
@@ -66,7 +100,7 @@
             <button class="add-btn">AÑADIR</button>
         </div>
         </div>
-    </section>
+    </section> 
     <section class="products-section">
         <h2>COMPRAR VERDURA ONLINE</h2>
         <div class="product-grid">
@@ -95,67 +129,7 @@
             <button class="add-btn">AÑADIR</button>
         </div>
         </div>
-    </section>
-
-    <section class="info-section">
-        <h2>¿Por qué comprar fruta online en FRUTWEB?</h2>
-        <p>FRUTWEB es tu frutería online de confianza. Hemos crecido hasta tal envergadura que ahora puedes comprar la fruta y la verdura de temporada a través de nuestra web, para que puedas disfrutar de los productos de la huerta y del campo totalmente naturales y con la mayor garantía de frescura.
-        Somos conscientes de que el mercado de la fruta y la verdura por Internet ha ido creciendo cada vez más y el consumo de los productos naturales directos de la tierra a tu casa está cada vez más demandado. Por eso hemos querido aumentar nuestro catálogo y poder ofrecer una mayor variedad para que puedas comprar fruta y verdura online sin tener que moverte de casa y con total tranquilidad y confort. Nos comprometemos a que todos nuestros productos lleguen en perfecto estado a tu casa y en el menor tiempo posible.</p>
-        <h2>Somos garantía de Calidad</h2>
-        <p>Comprar fruta y verdura online está al alcance de tu mano y si no quieres gran cantidad de un sólo producto, también dispondremos de packs personalizados que puedas comprar poniéndote en contacto con nosotros o escogiendo los diferentes packs de combinaciones que estarán en nuestra web.
-           En determinadas fechas lanzamos promociones con descuentos especiales, así que debes estar muy atento a tu email para aprovecharte de todas las ofertas que tenemos. Si quieres estar al día de todo lo que sucede en FRUTWEB, de las novedades que tenemos, de cómo gestionamos las dudas de nuestros clientes, etc… sólo tienes que suscribirte a nuestra newsletter y además recibirás recetas completamente gratuitas que puedes hacer con cualquiera de nuestros productos.</p>
-        <div class="facility-image">
-            <img src="Imagenes/instalaciones.avif" alt="Nuestras instalaciones">
-            <div class="overlay-text">Directo de nuestra huerta en Gran Canaria a tu mesa.</div>
-        </div>
-    </section>
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <img src="Imagenes/Frutweb logo.png" alt="Logo Frutweb" class="login-logo">
-            
-            <div id="login-form">
-                <h2>Bienvenido de nuevo</h2>
-                <form onsubmit="login(event)">                   
-                    <div class="input-group">
-                        <i class="fa-solid fa-envelope"></i>
-                        <input type="email" id="login-email" placeholder="Correo electrónico" required>
-                    </div>
-                    <div class="input-group">
-                        <i class="fa-solid fa-lock"></i>
-                        <input type="password" id="login-password" placeholder="Crea tu contraseña" required>
-                    </div>
-                    <button type="submit" class="btn-primary-large">ENTRAR</button>
-                </form>
-                <p>¿No tienes cuenta? <a href="javascript:void(0)" onclick="toggleForm()">Regístrate aquí</a></p>
-            </div>
-
-            <div id="register-form" style="display: none;">
-                <h2>Crea tu cuenta</h2>
-                <form onsubmit="register(event)">
-                    <div class="input-group">
-                        <i class="fa-solid fa-user"></i>
-                        <input type="text" id="reg-nombre" placeholder="Nombre completo" required>
-                    </div>
-                    <div class="input-group">
-                        <i class="fa-solid fa-envelope"></i>
-                        <input type="email" id="reg-email" placeholder="Correo electrónico" required>
-                    </div>
-                    <div class="input-group">
-                        <i class="fa-solid fa-lock"></i>
-                        <input type="password" id="reg-password" placeholder="Crea tu contraseña" required>
-                    </div>
-                    <div class="policy-group">
-                        <input type="checkbox" id="policy" name="policy" required>
-                        <label for="policy">He leído y acepto la <a href="#">política de privacidad</a></label>
-                    </div>
-                    <button type="submit" class="btn-primary-large">REGISTRARME</button>
-                </form>
-                <p>¿Ya eres cliente? <a href="javascript:void(0)" onclick="toggleForm()">Inicia sesión</a></p>
-            </div>
-        </div>
-    </div>
-
+    </section>--> 
     <div id="logoutModal" class="modal">
         <div class="modal-content" style="text-align: center;padding: 40px; border-radius: 15px;">
             <span class="close-btn" onclick="cerrarModalLogout()">&times;</span>
@@ -211,69 +185,22 @@
         </div>
         <p class="copy">Copyright © Frutweb - <a href="#">Aviso Legal</a></p>
     </footer>
-    <script>
-    function abrirModalLogout() {
-    document.getElementById("logoutModal").style.display = "flex";
-        }
-
-        function cerrarModalLogout() {
-            document.getElementById("logoutModal").style.display = "none";
-        }
-
-        // --- LÓGICA DE SALIDA (JWT) ---
-        async function ejecutarSalidaBackend() {
-            try {
-                cerrarModalLogout();
-                
-                // Obtenemos el token para avisar al backend (opcional con JWT, pero buena práctica)
-                const token = localStorage.getItem("token");
-
-                const res = await fetch("http://localhost:3000/api/auth/logout", {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${token}`
-                    }
-                });
-
-                // TANTO SI EL RES ES OK COMO SI NO, BORRAMOS LOCALMENTE
-                // El logout en JWT es destruir el token en el cliente
-                localStorage.removeItem("user");
-                localStorage.removeItem("token");
-
-                // Mostrar modal de despedida
-                document.getElementById("despedidaModal").style.display = "flex";
-                
-                // Redirigir tras 2 segundos (6s era mucho tiempo, lo bajé a 2s)
-                setTimeout(() => {
-                    window.location.href = "home.html";
-                }, 2000);
-
-            } catch (error) {
-                console.error("Error al cerrar sesión:", error);
-                // Limpieza de emergencia
-                localStorage.clear();
-                window.location.href = "home.html";
-            }
-        }
-
-        // --- PROTECCIÓN DE RUTA ---
-        // Si alguien entra a dashboardcliente sin token, lo mandamos a casa
-        function verificarAcceso() {
-            const token = localStorage.getItem("token");
-            if (!token) {
-                window.location.href = "home.html";
-            }
-        }
-
-        // Cerrar modales si se hace clic fuera
-        window.onclick = function(event) {
-            const logoutModal = document.getElementById('logoutModal');
-            if (event.target == logoutModal) cerrarModalLogout();
-        }
-
-        // Ejecutar al cargar la página
-        verificarAcceso();
-    </script> 
     <script src="script.js"></script>
+    <script>
+    
+       
+    document.addEventListener("DOMContentLoaded", () => {
+        verificarEstadoNavegacion();
+        cargarProductosPorCategoria("fruta", "contenedor-frutas", "../Imagenes/fresa.jpg");
+        cargarProductosPorCategoria("verdura", "contenedor-verduras", "../Imagenes/verdura-default.jpg");
+        cargarProductosPorCategoria("combo", "contenedor-combo", "../Imagenes/combo-default.jpg");
+         if (autoAdd) {
+        agregarAlCarrito(Number(autoAdd));
+        history.replaceState({}, document.title, window.location.pathname);
+    }
+    });
+
+    </script> 
+    
 </body>
 </html>

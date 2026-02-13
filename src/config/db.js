@@ -19,3 +19,4 @@ pool.getConnection()
   .catch(err => {
     console.error("❌ ERROR de conexión a MySQL:", err.message);
   });
+  export default pool;

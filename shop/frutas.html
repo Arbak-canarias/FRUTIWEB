@@ -18,10 +18,14 @@
         </ul>
         <div class="nav-icons">
             <a href="../shop/favoritos.html" class="icon-link" title="Mis favoritos">
-                <i class="fa-regular fa-heart"></i>Favoritos</a>
-            <a href="../shop/venta.html" class="icon-link" id="cart-icon" title="Mi carrito">
-                 <i class="fa-solid fa-cart-shopping"></i>Comprar</a>
-                <button class="btn-primary" id="auth-btn">CERRAR SESIÓN</button>            
+                <i class="fa-regular fa-heart"></i>
+                Favoritos <span id="count-fav" class="badge">0</span> </a> <!--para cambiar colores ir CSS .badge-->
+
+                <a href="../shop/venta.html" class="icon-link" id="cart-icon" title="Mi carrito">
+                <i class="fa-solid fa-cart-shopping"></i>
+                Comprar <span id="count-cart" class="badge">0</span>  </a>
+                <button id="btn-mi-perfil" class="btn-primary" style="display: none;">MI PERFIL</button>    
+                <button id="btn-logout" class="btn-primary" onclick="abrirModalLogout()">CERRAR SESIÓN</button>            
                 <div class="search-box">                
                 <input type="text" placeholder="Buscar...">
                 <i class="fa-solid fa-magnifying-glass"></i>
@@ -35,53 +39,7 @@
             <!--<button class="btn-primary">ÚNETE</button>-->
         </div>
     </header>
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <img src="../Imagenes/Frutweb logo.png" alt="Logo Frutweb" class="login-logo">
-            
-            <div id="login-form">
-                <h2>Bienvenido de nuevo</h2>
-                <form onsubmit="login(event)">                   
-                    <div class="input-group">
-                        <i class="fa-solid fa-envelope"></i>
-                        <input type="email" id="login-email" placeholder="Correo electrónico" required>
-                    </div>
-                    <div class="input-group">
-                        <i class="fa-solid fa-lock"></i>
-                        <input type="password" id="login-password" placeholder="Crea tu contraseña" required>
-                    </div>
-                    <button type="submit" class="btn-primary-large">ENTRAR</button>
-                </form>
-                <p>¿No tienes cuenta? <a href="javascript:void(0)" onclick="toggleForm()">Regístrate aquí</a></p>
-            </div>
-
-            <div id="register-form" style="display: none;">
-                <h2>Crea tu cuenta</h2>
-                <form onsubmit="register(event)">
-                    <div class="input-group">
-                        <i class="fa-solid fa-user"></i>
-                        <input type="text" id="reg-nombre" placeholder="Nombre completo" required>
-                    </div>
-                    <div class="input-group">
-                        <i class="fa-solid fa-envelope"></i>
-                        <input type="email" id="reg-email" placeholder="Correo electrónico" required>
-                    </div>
-                    <div class="input-group">
-                        <i class="fa-solid fa-lock"></i>
-                        <input type="password" id="reg-password" placeholder="Crea tu contraseña" required>
-                    </div>
-                    <div class="policy-group">
-                        <input type="checkbox" id="policy" name="policy" required>
-                        <label for="policy">He leído y acepto la <a href="#">política de privacidad</a></label>
-                    </div>
-                    <button type="submit" class="btn-primary-large">REGISTRARME</button>
-                </form>
-                <p>¿Ya eres cliente? <a href="javascript:void(0)" onclick="toggleForm()">Inicia sesión</a></p>
-            </div>
-        </div>
-    </div>
-
+    
     <div id="logoutModal" class="modal">
         <div class="modal-content" style="text-align: center;padding: 40px; border-radius: 15px;">
             <span class="close-btn" onclick="cerrarModalLogout()">&times;</span>
@@ -111,6 +69,13 @@
     <div id="contenedor-frutas" class="product-grid">
     </div>
     </section>
+    <!--Notificaciones de compra y favoritos-->
+    <div id="notificacion-frutweb" class="toast-personalizado">
+        <div class="toast-content">
+            <img src="../Imagenes/Frutweb logo.png" alt="Logo" class="toast-logo">
+            <p id="toast-mensaje">¡Añadido con éxito!</p>
+        </div>
+    </div>
     <!--<section class="products-section">
         <h2>COMPRAR FRUTA ONLINE</h2>
         <div class="product-grid">
@@ -198,81 +163,24 @@
         </div>
         <p class="copy">Copyright © Frutweb - <a href="#">Aviso Legal</a></p>
     </footer>
+    <script src="../script.js"></script>
     <script>
                
     document.addEventListener("DOMContentLoaded", () => {
-        cargarFrutas();
+        cargarProductosPorCategoria("fruta", "contenedor-frutas", "../Imagenes/fresa.jpg");
+       
+         const params = new URLSearchParams(window.location.search);
+    const autoAdd = params.get("autoAdd");
+
+    if (autoAdd) {
+        agregarAlCarrito(Number(autoAdd));
+        history.replaceState({}, document.title, window.location.pathname);
+    }
     });
 
-   async function cargarFrutas() {
-    const contenedor = document.getElementById("contenedor-frutas");
-    const token = localStorage.getItem('token'); 
 
-    // Verificación de seguridad antes de empezar
-    if (!contenedor) {
-        console.error("No se encontró el contenedor 'contenedor-frutas'");
-        return;
-    }
-
-    try {
-        // ÚNICA PETICIÓN: Enviamos el token en los headers
-        const response = await fetch("http://localhost:3000/api/productos", {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        });
-
-        // Convertimos la respuesta a JSON
-        const data = await response.json();
-
-        // 1. Validar si el servidor rechazó la petición por falta de token
-        if (!response.ok || data.error) {
-            contenedor.innerHTML = `<p style="text-align:center;">Debes iniciar sesión para ver los productos.</p>`;
-            return;
-        }
-
-        // 2. FILTRAR: Solo productos cuya categoría sea 'fruta'
-        // (Usamos 'data' directamente porque ya es el array de productos)
-        const frutas = data.filter(p => p.categoria && p.categoria.toLowerCase() === 'fruta');
-
-        // 3. Limpiar el contenedor
-        contenedor.innerHTML = "";
-
-        if (frutas.length === 0) {
-            contenedor.innerHTML = "<p>No hay frutas disponibles en este momento.</p>";
-            return;
-        }
-
-        // 4. Dibujar las tarjetas
-        frutas.forEach(fruta => {
-            const card = document.createElement("div");
-            card.className = "product-card";
-
-            card.innerHTML = `
-                <img src="${fruta.imagen_url || '../Imagenes/fresa.jpg'}" alt="${fruta.nombre}">
-                <h3>${fruta.nombre.toUpperCase()}</h3>
-                <p>${fruta.descripcion || 'Producto fresco local'}</p>
-                <div class="precio-tag">${fruta.precio} €</div>
-                <div class="card-buttons">
-                    <button class="btn-large heart" title="Me gusta" onclick="agregarFavorito(${fruta.id_producto})">
-                        <i class="fa-regular fa-heart"></i> Me gusta
-                    </button>
-                    <button class="btn-large cart" title="Comprar" onclick="agregarAlCarrito(${fruta.id_producto})">
-                        <i class="fa-solid fa-cart-shopping"></i> Comprar
-                    </button>
-                </div>
-            `;
-            contenedor.appendChild(card);
-        });
-
-    } catch (error) {
-        console.error("Error detallado:", error);
-        contenedor.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: red;">Error al conectar con la base de datos.</p>`;
-    }
-}
+   
    </script>
-    <script src="../script.js"></script>
+   
 </body>
 </html>

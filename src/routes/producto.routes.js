@@ -9,8 +9,9 @@ import {
 } from "../controllers/producto.controller.js";
 
 const router = express.Router();
-
 router.get("/", authJWT, isAdmin, getProductos);
+router.get("/public", authJWT, getProductos);
+
 router.post("/", authJWT, isAdmin, crearProducto);
 router.put("/:id", authJWT, isAdmin, actualizarProducto);
 router.delete("/:id", authJWT, isAdmin, eliminarProducto);

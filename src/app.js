@@ -1,15 +1,12 @@
 import express from "express";
-
 import cors from "cors";
-
-
 import authRoutes from "./routes/auth.routes.js";
 import productoRoutes from "./routes/producto.routes.js";
 import usuarioRoutes from "./routes/usuario.routes.js";
+import pedidoRoutes from "./routes/pedido.routes.js";
 
 
 const app = express();
-
 app.use(cors({
   origin: ["http://localhost:5500","http://127.0.0.1:5500"],
   credentials: false,
@@ -23,6 +20,7 @@ app.use(express.static("public"));
 app.use("/api/auth", authRoutes);
 app.use("/api/productos", productoRoutes);
 app.use("/api/usuarios", usuarioRoutes);
+app.use('/api/pedidos', pedidoRoutes);
 
 
 export default app;  
