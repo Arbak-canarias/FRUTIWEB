@@ -674,8 +674,7 @@ background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)),
     text-align: center;
     border: none;
     font-weight: bold;
-    -moz-appearance: textfield;
-}
+ }
 
 .carrito-precio-subtotal {
     font-weight: bold;
