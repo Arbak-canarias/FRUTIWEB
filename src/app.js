@@ -15,12 +15,12 @@ app.use(cors({
 }));
 
 app.use(express.json());
-app.use(express.static("public"));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/productos", productoRoutes);
 app.use("/api/usuarios", usuarioRoutes);
 app.use('/api/pedidos', pedidoRoutes);
+app.use(express.static("public"));
 
 
 export default app;  

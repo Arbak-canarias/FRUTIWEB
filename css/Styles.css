@@ -95,7 +95,7 @@ background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)),
     font-size: 32px;
     font-weight: 700;
     margin-bottom: 5px;
-    color: var(--accent-orange);
+    color: black;
 }
 
 .hero p {
@@ -106,7 +106,7 @@ background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)),
 }
 
 /* El botón circular blanco de tu diseño */
-.btn-primary {
+.btn-primary, .btn-history,.btn-profile {
     background-color: white;
     color: var(--primary-green);
     border: none;
@@ -122,17 +122,17 @@ background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)),
     transition: transform 0.2s;
 }
 
-.btn-primary:hover {
+.btn-primary:hover, .btn-history:hover, .btn-profile:hover {
     transform: scale(1.05);
      filter: brightness(0.95);
 }
-.navbar .btn-primary {
+.navbar .btn-primary,.navbar .btn-history, .navbar .btn-profile  {
     background-color: var(--primary-green); /* mismo color que el navbar */
     color: black;
     box-shadow: none;
     font-family: var(--font-main);
 }
-
+ 
 
 /* Iconos de redes sociales */
 .socials {
@@ -332,7 +332,7 @@ background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)),
     font-family: var(--font-menu);
     font-size: 28px;
     font-weight: 700;
-    background: rgba(0, 0, 0, 0.35); /* mejora contraste */
+    background: rgba(0, 0, 0, 0.6); /* mejora contraste */
     padding: 10px 22px;
     border-radius: 8px;
     letter-spacing: 0.5px;
@@ -731,7 +731,24 @@ background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)),
     align-items: center;
     gap: 10px;
 }
+.footer-link {
+    cursor: pointer;
+    transition: color 0.3s;
+}
 
+.footer-link:hover {
+    color: #4CAF50; /* O el color verde de tu marca */
+    text-decoration: underline;
+}
+
+/* Ajuste para el scroll interno del modal legal */
+#legalTexto::-webkit-scrollbar {
+    width: 8px;
+}
+#legalTexto::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
 /* Copyright y Aviso Legal */
 .footer .copy {
     text-align: center;
@@ -809,6 +826,8 @@ background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)),
 .admin-table th {
     background-color: #eee;
 }
+
+
 /* Tablet  */
 @media (max-width: 900px) {
     .product-grid {

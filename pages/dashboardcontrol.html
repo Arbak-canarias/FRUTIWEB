@@ -4,23 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FRUTWEB - Tu Frutería Online</title>
-    <link rel="stylesheet" href="Styles.css">
+    <link rel="stylesheet" href="/css/Styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo"><img src="Imagenes/Frutweb logo.png" alt="FRUTWEB"></div>
+        <div class="logo"><img src="/Imagenes/Frutweb logo.png" alt="FRUTWEB"></div>
         <ul class="nav-links">
-            <li><a href="home.html">INICIO</a></li>
-            <li><a href="shop/frutas.html">FRUTA</a></li>
-            <li><a href="shop/combo.html">COMBO</a></li>
-            <li><a href="shop/verduras.html">VERDURA</a></li>
+            <li><a href="/pages/dashboardcontrol.html">INICIO</a></li>
+            <li><a href="/pages/shop/frutas.html">FRUTA</a></li>
+            <li><a href="/pages/shop/combo.html">COMBO</a></li>
+            <li><a href="/pages/shop/verduras.html">VERDURA</a></li>
         </ul>
         <div class="nav-icons">
-             <a href="../shop/favoritos.html" class="icon-link" title="Mis favoritos">
+             <a href="/pages/shop/favoritos.html" class="icon-link" title="Mis favoritos">
                 <i class="fa-regular fa-heart"></i>
                 Favoritos <span id="count-fav" class="badge">0</span> </a> <!--para cambiar colores ir CSS .badge-->
-            <a href="../shop/venta.html" class="icon-link" id="cart-icon" title="Mi carrito">
+            <a href="/pages/shop/venta.html" class="icon-link" id="cart-icon" title="Mi carrito">
                 <i class="fa-solid fa-cart-shopping"></i>
                 Comprar <span id="count-cart" class="badge">0</span>  </a>
             <button id="btn-mi-perfil" class="btn-primary" style="display: none;">MI PERFIL</button>    
@@ -104,12 +104,16 @@
         <section id="pedidos" class="admin-section" style="display:none;">
             <h2>Gestionar Pedidos</h2>
             <table class="admin-table">
-                <thead>
-                    <tr><th>ID Pedido</th><th>Cliente</th><th>Estado</th><th>Total</th></tr>
+            <thead>
+                <tr>
+                    <th>ID Pedido</th>
+                    <th>Cliente</th>
+                    <th>Estado</th>
+                    <th>Productos</th>                    
+                    <th>Total</th>
+                </tr>
                 </thead>
-                <tbody>
-                    <tr><td>#9921</td><td>Juan Pérez</td><td>Pendiente</td><td>25.30€</td></tr>
-                </tbody>
+                <tbody id="tabla-pedidos-body"></tbody>
             </table>
         </section>
 
@@ -155,18 +159,23 @@
 
 </section>
 </div>
-</main>
-    
+<div id="notificacion-frutweb" class="toast-personalizado">
+    <div class="toast-content">
+        <img src="../Imagenes/Frutweb logo.png" alt="Logo" class="toast-logo">
+        <p id="toast-mensaje">¡Añadido con éxito!</p>
+    </div>
+    </div>
+</main>  
 
     <footer class="footer">
         <div class="footer-cols">
             <div class="col">
                 <h4>Explorar</h4>
                 <ul>
-                    <li>Inicio</li>
-                    <li>Nuestra compañía</li>
-                    <li>Política de privacidad</li>
-                    <li>Términos y condiciones</li>
+                    <li><a href="/index.html" style="color:inherit; text-decoration:none;">Inicio</a></li>
+                    <li onclick="abrirInfoLegal('compania')" class="footer-link">Nuestra compañía</li>
+                    <li onclick="abrirInfoLegal('privacidad')" class="footer-link">Política de privacidad</li>
+                    <li onclick="abrirInfoLegal('terminos')" class="footer-link">Términos y condiciones</li>
                 </ul>
             </div>
             <div class="col">
@@ -185,8 +194,19 @@
                 <p><i class="fa-solid fa-phone"></i> 666123456</p>
             </div>
         </div>
-        <p class="copy">Copyright © Frutweb - <a href="#">Aviso Legal</a></p>
+        <p class="copy">Copyright © Frutweb -
+        <a href="javascript:void(0)" onclick="abrirInfoLegal('avisolegal')">Aviso Legal</a></p>
     </footer>
+        <div id="modalLegal" class="modal">
+                <div class="modal-content" style="max-width: 600px; text-align: left;">
+                <span class="close-btn" onclick="cerrarInfoLegal()">&times;</span>
+                <h2 id="legalTitulo" style="color: #2e7d32; margin-bottom: 15px;"></h2>
+                <div id="legalTexto" style="max-height: 400px; overflow-y: auto; line-height: 1.6;">
+                </div>
+            </div>
+        </div>
+            <script src="/script.js"></script>
+
     <script>
 
         function getAuthHeaders() {
@@ -205,44 +225,39 @@
                 }
 
                 // --- LÓGICA DE SALIDA (JWT) ---
-                async function ejecutarSalidaBackend() {
-                    try {
-                        cerrarModalLogout();
-                        
-                        // Obtenemos el token para avisar al backend (opcional con JWT, pero buena práctica)
-                        const token = localStorage.getItem("token");
+async function ejecutarSalidaBackend() {
+    try {
+        cerrarModalLogout();
+        
+        const token = localStorage.getItem("token");
 
-                        const res = await fetch("http://localhost:3000/api/auth/logout", {
-                            method: "POST",
-                            headers: {
-                                "Authorization": `Bearer ${token}`
-                            }
-                        });
+        // 1. Avisar al servidor (opcional, pero recomendado)
+        await fetch("http://localhost:3000/api/auth/logout", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
 
-                        // TANTO SI EL RES ES OK COMO SI NO, BORRAMOS LOCALMENTE
-                        // El logout en JWT es destruir el token en el cliente
-                        localStorage.removeItem("user");
-                        localStorage.removeItem("token");
+    } catch (error) {
+        console.error("Error al notificar logout al servidor:", error);
+    } finally {
+        // 2. LIMPIEZA TOTAL DE DATOS LOCALES
+        // Esto borra token, usuario, carrito y favoritos para que no queden rastros
+        localStorage.clear(); 
 
-                        // Mostrar modal de despedida
-                        document.getElementById("despedidaModal").style.display = "flex";
-                        
-                        // Redirigir tras 2 segundos (6s era mucho tiempo, lo bajé a 2s)
-                        setTimeout(() => {
-                            window.location.href = "home.html";
-                        }, 2000);
-
-                    } catch (error) {
-                        console.error("Error al cerrar sesión:", error);
-                        // Limpieza de emergencia
-                        localStorage.clear();
-                        window.location.href = "home.html";
-                    }
-                }
+        // 3. Mostrar despedida y redirigir
+        document.getElementById("despedidaModal").style.display = "flex";
+        
+        setTimeout(() => {
+            window.location.href = "/index.html";
+        }, 2000);
+    }
+}
                  function verificarAcceso() {
                 const token = localStorage.getItem("token");
                 if (!token) {
-                    window.location.href = "home.html";
+                    window.location.href = "/index.html";
                 }
             }
 
@@ -259,7 +274,7 @@
         try {
             const token = localStorage.getItem("token");
             if (!token) {
-                window.location.href = "home.html";
+                window.location.href = "index.html";
                 return;
             }
             // VERIFICACIÓN DE IDENTIDAD PRIMERO
@@ -271,7 +286,7 @@
             if (!res.ok) {
                 console.error("Token no válida o expirada");
                 localStorage.removeItem("token");
-                window.location.href = "home.html";
+                window.location.href = "index.html";
                 return;
             }
 
@@ -315,6 +330,70 @@
             </td>
         </tr>
     `).join("");
+}
+async function cargarPedidos() {
+    const res = await fetch("http://localhost:3000/api/pedidos", {
+        headers: getAuthHeaders()
+    });
+
+    const data = await res.json();
+    const tbody = document.querySelector("#tabla-pedidos-body");
+
+    const pedidosAgrupados = {};
+
+    data.forEach(p => {
+        if (p.estado === "entregado") return;
+
+        if (!pedidosAgrupados[p.id_pedido]) {
+            pedidosAgrupados[p.id_pedido] = {
+                cliente: p.cliente,
+                estado: p.estado,                
+                productos: [],
+                total: p.total,
+            };
+        }
+
+        pedidosAgrupados[p.id_pedido].productos.push(
+            `${p.producto} (${p.cantidad})`
+        );
+    });
+
+    tbody.innerHTML = Object.entries(pedidosAgrupados).map(([id, p]) => `
+        <tr>
+            <td>#${id}</td>
+            <td>${p.cliente}</td>
+            <td>
+                <select onchange="cambiarEstadoPedido(${id}, this.value)">
+                    <option value="pendiente" ${p.estado === 'pendiente' ? 'selected' : ''}>Pendiente</option>
+                    <option value="preparando" ${p.estado === 'preparando' ? 'selected' : ''}>Preparando</option>
+                    <option value="enviando" ${p.estado === 'enviado' ? 'selected' : ''}>Enviado</option>
+                    <option value="entregado" ${p.estado === 'entregado' ? 'selected' : ''}>Entregado</option>
+                </select>
+            </td>
+            <td>${p.productos.join("<br>")}</td>
+            <td>${p.total} €</td>
+            
+        </tr>
+    `).join("");
+}
+
+async function cambiarEstadoPedido(id_pedido, nuevoEstado) {
+    try {
+        const res = await fetch(`http://localhost:3000/api/pedidos/${id_pedido}`, {
+            method: 'PATCH',
+            headers: getAuthHeaders(),
+            body: JSON.stringify({ estado: nuevoEstado })
+        });
+
+        if (!res.ok) {
+            console.error("Error al actualizar estado del pedido");
+            alert("No se pudo actualizar el estado.");
+        } else {
+            console.log(`Pedido ${id_pedido} actualizado a ${nuevoEstado}`);
+        }
+    } catch (error) {
+        console.error("Error al actualizar estado del pedido:", error);
+    }
 }
 
         async function cargarUsuarios() {
@@ -382,7 +461,7 @@
 
             cargarUsuarios();
             }
-            function showSection(sectionId) {
+function showSection(sectionId) {
                
                 const welcomeMsg = document.getElementById('welcome-msg');
                 if (welcomeMsg) welcomeMsg.style.display = 'none';
@@ -403,6 +482,9 @@
                 }if (sectionId === "productos") {
                     cargarProductos();
                 }    
+                if (sectionId === "pedidos") {
+                    cargarPedidos();   
+                }
             }
             
             document.getElementById("form-producto").addEventListener("submit", async (e) => {
@@ -429,7 +511,7 @@
                     
                         const data = await res.json();
                     if (res.ok) {
-                        alert("¡Producto guardado correctamente!");
+                        mostrarAvisoFrutweb("¡Producto guardado correctamente!");                        
                         document.getElementById("form-producto").reset();
                         document.getElementById("id_producto").value = "" 
                         cargarProductos(); // Recargar la tabla automáticamente
@@ -444,11 +526,13 @@
                     console.error("Error al enviar:", error);
                     alert("No se pudo conectar con el servidor");
                 }
+                if (sectionId === "pedidos") {
+                    cargarPedidos();
+                }
             });
             window.onload = inicializarDashboard;
+
 </script>
 
-
-    <script src="script.js"></script>
 </body>
 </html>

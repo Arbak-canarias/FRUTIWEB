@@ -4,46 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FRUTWEB - Tu Frutería Online</title>
-    <link rel="stylesheet" href="../Styles.css">
+    <link rel="stylesheet" href="/css/Styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo"><img src="../Imagenes/Frutweb logo.png" alt="FRUTWEB"></div>
+        <div class="logo"><img src="/Imagenes/Frutweb logo.png" alt="FRUTWEB"></div>
         <ul class="nav-links">
-            <li><a href="/home.html">INICIO</a></li>
-            <li><a href="/shop/frutas.html">FRUTA</a></li>
-            <li><a href="/shop/combo.html">COMBO</a></li>
-            <li><a href="/shop/verduras.html">VERDURA</a></li>
+            <li><a href="/index.html">INICIO</a></li>
+            <li><a href="/pages/shop/frutas.html">FRUTA</a></li>
+            <li><a href="/pages/shop/combo.html">COMBO</a></li>
+            <li><a href="/pages/shop/verduras.html">VERDURA</a></li>
         </ul>
         <div class="nav-icons">
-            <a href="../shop/favoritos.html" class="icon-link" title="Mis favoritos">
-                <i class="fa-regular fa-heart"></i>
+               <a href="../shop/favoritos.html" class="icon-link" title="Mis favoritos">
+                    <i class="fa-regular fa-heart"></i>
                 Favoritos <span id="count-fav" class="badge">0</span> </a> <!--para cambiar colores ir CSS .badge-->
-
                 <a href="../shop/venta.html" class="icon-link" id="cart-icon" title="Mi carrito">
-                <i class="fa-solid fa-cart-shopping"></i>
+                        <i class="fa-solid fa-cart-shopping"></i>
                 Comprar <span id="count-cart" class="badge">0</span>  </a>
-                <button id="btn-mi-perfil" class="btn-primary" style="display: none;">MI PERFIL</button>    
-                <button id="btn-logout" class="btn-primary" onclick="abrirModalLogout()">CERRAR SESIÓN</button>            
-                <div class="search-box">                
+            <button id="btn-mi-perfil" class="btn-primary" style="display: none;">MI PERFIL</button>    
+            <button id="btn-logout" class="btn-primary" onclick="abrirModalLogout()">CERRAR SESIÓN</button> 
+            <div class="search-box">
                 <input type="text" placeholder="Buscar...">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
         </div>
     </nav>
-    <header class="hero">
+     <section class="hero">
         <div class="hero-content">
             <h1>¡Gran Promoción Especial!</h1>
             <p>Descuento de hasta 20% en tu primera compra por tiempo limitado.</p>
-            <!--<button class="btn-primary">ÚNETE</button>-->
+            <!--<button class="btn-primary">ÚNETE</button> -->
         </div>
-    </header>
+    </section>
     
     <div id="logoutModal" class="modal">
         <div class="modal-content" style="text-align: center;padding: 40px; border-radius: 15px;">
             <span class="close-btn" onclick="cerrarModalLogout()">&times;</span>
-            <img src="../Imagenes/Frutweb logo.png" alt="/Logo Frutweb" class="login-logo">
+            <img src="/Imagenes/Frutweb logo.png" alt="/Logo Frutweb" class="login-logo">
             
             <div id="logout-form-content" style="text-align: center;">
                 <h2>¿Estás seguro de que deseas salir?</h2>
@@ -56,7 +55,7 @@
     </div>
     <div id="despedidaModal" class="modal">
     <div class="modal-content" style="text-align: center;padding: 40px; border-radius: 15px;">
-        <img src="../Imagenes/Frutweb logo.png" alt="Logo Frutweb" class="login-logo">
+        <img src="/Imagenes/Frutweb logo.png" alt="Logo Frutweb" class="login-logo">
         <h2 style="color: #2e7d32; margin-top: 20px;">¡HASTA PRONTO!</h2>
         <p>Esperamos verte de nuevo muy pronto en FRUTWEB.</p>
         <div style="margin-top: 30px;">
@@ -65,24 +64,24 @@
         </div>
     </div>
     <section class="products-section">
-    <h2>COMPRAR FRUTA ONLINE</h2>
-    <div id="contenedor-frutas" class="product-grid">
+    <h2>COMPRAR COMBO ONLINE</h2>
+    <div id="contenedor-combo" class="product-grid">
     </div>
     </section>
     <!--Notificaciones de compra y favoritos-->
     <div id="notificacion-frutweb" class="toast-personalizado">
         <div class="toast-content">
-            <img src="../Imagenes/Frutweb logo.png" alt="Logo" class="toast-logo">
+            <img src="/Imagenes/Frutweb logo.png" alt="Logo" class="toast-logo">
             <p id="toast-mensaje">¡Añadido con éxito!</p>
         </div>
     </div>
-    <!--<section class="products-section">
-        <h2>COMPRAR FRUTA ONLINE</h2>
+   <!--<section class="products-section">
+        <h2>COMPRAR COMBO ONLINE</h2>
         <div class="product-grid">
             <div class="product-card">
-                <img src="../Imagenes/fresa.jpg" alt="Fresa">
-                <h3>FRESA</h3>
-                <p>De Valsequillo km 0</p>
+                <img src="../Imagenes/combo1.webp" alt="Combo1">
+                <h3>Combo pucherito</h3>
+                <p>El preferido</p>
                 <div class="card-buttons">
                     <button class="btn-large heart" title="Me gusta">
                         <i class="fa-solid fa-heart"></i> Me gusta
@@ -93,9 +92,9 @@
                 </div>
             </div>            
         <div class="product-card">
-            <img src="../Imagenes/manzanas.avif" alt="Manzanas">
-            <h3>MANZANAS</h3>
-            <p>De valleseco</p>
+            <img src="../Imagenes/Combo2.avif" alt="Combo2">
+            <h3>Combo Verde</h3>
+            <p>Nuestra muestra mas freshhh</p>
             <div class="card-buttons">
                     <button class="btn-large heart" title="Me gusta">
                         <i class="fa-solid fa-heart"></i> Me gusta
@@ -106,22 +105,9 @@
             </div>
         </div>
         <div class="product-card">
-            <img src="../Imagenes/kiwi.avif" alt="Kiwis">
-            <h3>KIWIS</h3>
-            <p>Fresquisimos</p>
-            <div class="card-buttons">
-                    <button class="btn-large heart" title="Me gusta">
-                        <i class="fa-solid fa-heart"></i> Me gusta
-                    </button>
-                    <button class="btn-large cart" title="Comprar">
-                        <i class="fa-solid fa-cart-shopping"></i> Comprar
-                    </button>                    
-            </div>
-        </div>
-        <div class="product-card">
-            <img src="../Imagenes/uvas.avif" alt="Uvas">
-            <h3>Uvas</h3>
-            <p>De Lanzarote</p>
+            <img src="../Imagenes/combo3.webp" alt="Combo3 ">
+            <h3>Combo frutas</h3>
+            <p>Seleccion de fruta de temporada</p>
             <div class="card-buttons">
                     <button class="btn-large heart" title="Me gusta">
                         <i class="fa-solid fa-heart"></i> Me gusta
@@ -132,17 +118,17 @@
             </div>
         </div>
         </div>
-    </section> -->
-    
-    <footer class="footer">
+    </section>-->
+   
+     <footer class="footer">
         <div class="footer-cols">
             <div class="col">
                 <h4>Explorar</h4>
                 <ul>
-                    <li>Inicio</li>
-                    <li>Nuestra compañía</li>
-                    <li>Política de privacidad</li>
-                    <li>Términos y condiciones</li>
+                    <li><a href="/index.html" style="color:inherit; text-decoration:none;">Inicio</a></li>
+                    <li onclick="abrirInfoLegal('compania')" class="footer-link">Nuestra compañía</li>
+                    <li onclick="abrirInfoLegal('privacidad')" class="footer-link">Política de privacidad</li>
+                    <li onclick="abrirInfoLegal('terminos')" class="footer-link">Términos y condiciones</li>
                 </ul>
             </div>
             <div class="col">
@@ -161,26 +147,45 @@
                 <p><i class="fa-solid fa-phone"></i> 666123456</p>
             </div>
         </div>
-        <p class="copy">Copyright © Frutweb - <a href="#">Aviso Legal</a></p>
+        <p class="copy">Copyright © Frutweb -
+        <a href="javascript:void(0)" onclick="abrirInfoLegal('avisolegal')">Aviso Legal</a></p>
     </footer>
-    <script src="../script.js"></script>
-    <script>
-               
+    <div id="modalLegal" class="modal">
+                <div class="modal-content" style="max-width: 600px; text-align: left;">
+                <span class="close-btn" onclick="cerrarInfoLegal()">&times;</span>
+                <h2 id="legalTitulo" style="color: #2e7d32; margin-bottom: 15px;"></h2>
+                <div id="legalTexto" style="max-height: 400px; overflow-y: auto; line-height: 1.6;">
+                </div>
+            </div>
+        </div>
+    <div id="logoutModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="cerrarModalLogout()">&times;</span>
+        <img src="/Imagenes/Frutweb logo.png" alt="Logo Frutweb" class="login-logo">
+        
+        <h2>¿Estás seguro?</h2>
+        <p style="margin-bottom: 20px; color: #666;">Estás a punto de salir de tu cuenta de FRUTWEB.</p>
+        
+        <div style="display: flex; gap: 10px;">
+            <button class="btn-secondary" onclick="cerrarModalLogout()">CANCELAR</button>
+            <button id="confirm-logout-btn" class="btn-primary-large" style="margin-top: 0;">SÍ, CERRAR SESIÓN</button>
+        </div>
+    </div>
+    </div>
+    <script src="/script.js"></script>
+     <script>
     document.addEventListener("DOMContentLoaded", () => {
-        cargarProductosPorCategoria("fruta", "contenedor-frutas", "../Imagenes/fresa.jpg");
-       
-         const params = new URLSearchParams(window.location.search);
-    const autoAdd = params.get("autoAdd");
-
-    if (autoAdd) {
-        agregarAlCarrito(Number(autoAdd));
-        history.replaceState({}, document.title, window.location.pathname);
-    }
+         cargarProductosPorCategoria("combo", "contenedor-combo", "../../Imagenes/combo-default.jpg");
+        const params = new URLSearchParams(window.location.search);
+        const autoAdd = params.get("autoAdd"); 
+        if (autoAdd) {
+                agregarAlCarrito(Number(autoAdd));
+                history.replaceState({}, document.title, window.location.pathname);
+            }
     });
 
-
    
-   </script>
-   
+</script>        
+    
 </body>
 </html>

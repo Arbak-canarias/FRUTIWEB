@@ -64,8 +64,8 @@ async function login(e) {
                             window.location.href = destinoPendiente + `?autoAdd=${productoPendiente}`;
                         } else {
                             window.location.href = data.user.rol.toLowerCase() === "admin" 
-                                ? "dashboardcontrol.html" 
-                                : "dashboardcliente.html";
+                                ? "/pages/dashboardcontrol.html" 
+                                : "/pages/dashboardcliente.html";
                         }
                     }, 2000);
 
@@ -96,7 +96,8 @@ async function register(e) {
             });
 
             if (res.ok) {
-                alert("Registro completado. Ahora puedes iniciar sesión.");
+                mostrarAvisoFrutweb("Registro completado. Ahora puedes iniciar sesión.");
+  
                 toggleForm();
             } else {
                 const data = await res.json();
@@ -105,19 +106,33 @@ async function register(e) {
         }
 function revisarEstadoSesion() {
     const userStr = localStorage.getItem("user");
+    const perfilBtn = document.getElementById("btn-mi-perfil");
+    const logoutBtn = document.getElementById("btn-logout");
+    const historialBtn = document.getElementById("btn-historial");
+    const loginBtn = document.getElementById("btn-login");
+
     if (userStr) {
         const user = JSON.parse(userStr);
-        const loginBtn = document.querySelector(".nav-icons .btn-primary");
-        if (loginBtn) {
-            loginBtn.textContent = `HOLA, ${user.nombre.toUpperCase()}`;
-            loginBtn.onclick = () => {
-                const destino = user.rol === 'admin'
-                    ? 'dashboardcontrol.html'
-                    : 'dashboardcliente.html';
-                window.location.href = destino;};
+        if (perfilBtn) {
+            perfilBtn.style.display = "inline-block";
+            perfilBtn.textContent = `HOLA, ${user.nombre.toUpperCase()}`;
+            perfilBtn.onclick = () => {
+                window.location.href = user.rol === 'admin' 
+                    ? '/pages/dashboardcontrol.html' 
+                    : '/pages/dashboardcliente.html';
+            };
         }
+        if (logoutBtn) logoutBtn.style.display = "inline-block";
+        if (historialBtn) historialBtn.style.display = "inline-block";
+        if (loginBtn) loginBtn.style.display = "none"; // Ocultar login si hay sesión
+    } else {
+        if (perfilBtn) perfilBtn.style.display = "none";
+        if (logoutBtn) logoutBtn.style.display = "none";
+        if (historialBtn) historialBtn.style.display = "none";
+        if (loginBtn) loginBtn.style.display = "inline-block"; // Mostrar login si no hay sesión
     }
 }
+
 document.addEventListener("DOMContentLoaded", revisarEstadoSesion);
 
 function abrirModalLogout() {
@@ -152,14 +167,14 @@ async function ejecutarSalidaBackend() {
         if (despedida) despedida.style.display = "flex";
             setTimeout(() => {
                 // Redirigimos a la raíz (ajusta la ruta según si estás en shop/ o no)
-                window.location.href = "/home.html"; 
+                window.location.href = "/index.html"; 
             }, 2000);
        
         
         } catch (error) {
         console.error("Error al cerrar sesión:", error);
         localStorage.removeItem("user");
-        window.location.href = "/home.html";
+        window.location.href = "/index.html";
     }
 }
 // ================== NAVBAR ==================
@@ -171,7 +186,7 @@ function verificarEstadoNavegacion() {
 
   if (!token) {
     loginBtn.textContent = "INICIAR SESIÓN";
-    loginBtn.onclick = () => window.location.href = "home.html";
+    loginBtn.onclick = () => window.location.href = "index.html";
   } else {
     loginBtn.textContent = "CERRAR SESIÓN";
     loginBtn.onclick = abrirModalLogout;
@@ -208,10 +223,8 @@ async function cargarProductosPorCategoria(categoria, contenedorId, imagenDefaul
   const contenedor = document.getElementById(contenedorId);
   const token = getToken();
 
-  if (!contenedor) {
-    console.warn(`No se encontró el contenedor '${contenedorId}'`);
-    return;
-  }
+  if (!contenedor)  return;
+  
 
   try {
     const response = await fetch(API_PRODUCTOS_PUBLIC, {
@@ -228,6 +241,7 @@ async function cargarProductosPorCategoria(categoria, contenedorId, imagenDefaul
       contenedor.innerHTML = `<p style="text-align:center;">No tienes permisos para ver productos.</p>`;
       return;
     }
+          localStorage.setItem("productos", JSON.stringify(data));
 
     const productos = data.filter(p => p.categoria?.toLowerCase() === categoria);
 
@@ -419,7 +433,7 @@ async function cargarProductos(categoria, contenedorId) {
 
     } catch (e) {
         contenedor.innerHTML = "<p>Error al conectar con el servidor.</p>";
-        console.error(e);
+       
     }
 }
 function agregarFavorito(id) {
@@ -493,88 +507,56 @@ function cambiarCantidad(id, operacion) {
         cargarCarrito(); // Recargamos la vista
     }
 }
-async function finalizarCompra() {
+
+async function enviarPedidoAlBackend() {
     const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
     const token = localStorage.getItem("token");
 
-    if (carrito.length === 0) return alert("El carrito está vacío");
-    if (!token) return alert("Debes iniciar sesión para comprar");
+    if (carrito.length === 0) return mostrarAvisoFrutweb("El carrito está vacío");
+    if (!token) {
+        mostrarAvisoFrutweb("Inicia sesión para comprar", "aviso");
+        setTimeout(() => window.location.href = "/index.html", 2000);
+        return;
+    }
 
-    // Calculamos el total
-    const total = carrito.reduce((acc, p) => acc + (p.precio * p.cantidad), 0);
+    const total = carrito.reduce((acc, p) => acc + Number(p.precio) * p.cantidad, 0);
+    const datosPedido = { carrito, total };
 
     try {
-        const res = await fetch("http://localhost:3000/api/pedido/finalizar", {
+        const response = await fetch("http://localhost:3000/api/pedidos/finalizar", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
             },
-            body: JSON.stringify({ carrito, total })
-        });
-
-        const data = await res.json();
-
-        if (res.ok) {
-            alert("¡Gracias por tu compra! Pedido #" + data.id_pedido);
-            localStorage.removeItem("carrito"); // Limpiar carrito
-            window.location.href = "/home.html";
-        } else {
-            alert("Error: " + data.error);
-        }
-    } catch (error) {
-        console.error("Error en la compra:", error);
-    }
-}
-async function enviarPedidoAlBackend() {
-    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-    const token = localStorage.getItem("token");
-
-    // 1. Validaciones previas
-    if (carrito.length === 0) {
-        mostrarAvisoFrutweb("El carrito está vacío", "aviso");
-        return;
-    }
-
-    if (!token) {
-        mostrarAvisoFrutweb("Inicia sesión para comprar", "aviso");
-        setTimeout(() => { window.location.href = "/home.html"; }, 2000);
-        return;
-    }
-
-    // 2. Cálculo del total (por seguridad se calcula antes de enviar)
-    const total = carrito.reduce((acc, p) => acc + (p.precio * p.cantidad), 0);
-
-    const datosPedido = {
-        carrito: carrito,
-        total: total
-    };
-
-    try {
-        // 3. Petición al servidor
-        const response = await fetch("http://localhost:3000/api/pedidos/finalizar", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}` 
-            },
             body: JSON.stringify(datosPedido)
         });
 
-        const data = await response.json();
-
-        if (response.ok) {
-            // Éxito: Limpiamos carrito y avisamos
-            mostrarAvisoFrutweb("¡Compra realizada con éxito! 🎉");
-            localStorage.removeItem("carrito");
-            
-            // Redirigir tras un breve delay para que vea el mensaje
-            setTimeout(() => {
-                window.location.href = "/home.html"; 
-            }, 2500);
-        } else {
-            mostrarAvisoFrutweb("Error: " + (data.error || "No se pudo procesar"), "eliminar");
+        let data;
+        try {
+            data = await response.json();
+        } catch (e) {
+            console.error("❌ Respuesta del servidor NO es JSON:", await response.text());
+            mostrarAvisoFrutweb("Error de respuesta del servidor", "eliminar");
+            return;
         }
+
+        if (response.ok && data.success) {
+            // vaciar carrito
+            localStorage.removeItem("carrito");
+            const contenedor = document.getElementById("contenedor-carrito");
+            if (contenedor) contenedor.innerHTML = "<p style='text-align:center;'>Procesando...</p>";
+            const totalEl = document.getElementById("total");
+            if (totalEl) totalEl.innerText = "0 €";
+            const countEl = document.getElementById("count-cart");
+            if (countEl) countEl.innerText = "0";
+
+            mostrarAvisoFrutweb("¡Compra realizada con éxito! 🎉");
+            setTimeout(() => window.location.href = "/index.html", 2500);
+        } else {
+            mostrarAvisoFrutweb("Error: " + (data.error || data.mensaje || "No se pudo procesar"), "eliminar");
+        }
+
     } catch (error) {
         console.error("Error de red:", error);
         mostrarAvisoFrutweb("Error de conexión con el servidor", "eliminar");
@@ -584,6 +566,49 @@ function requiereLogin() {
     const token = localStorage.getItem("token");
     if (!token) {
         alert("Debes iniciar sesión");
-        window.location.href = "/home.html";
+        window.location.href = "/index.html";
+    }
+}
+function abrirInfoLegal(tipo) {
+    const modal = document.getElementById("modalLegal");
+    const titulo = document.getElementById("legalTitulo");
+    const texto = document.getElementById("legalTexto");
+    const logoHtml = '<img src="/Imagenes/Frutweb logo.png" style="width: 100px; display: block; margin: 0 auto 20px auto;">';
+
+    const contenidos = {
+        'compania': {
+            titulo: "Nuestra Compañía",
+            html: logoHtml +"<p>Frutweb nació en Gran Canaria con el objetivo de llevar el producto local directamente del agricultor a tu casa.</p><p>Creemos en el comercio justo y en la calidad de nuestra tierra.</p>"
+        },
+        'privacidad': {
+            titulo: "Política de Privacidad",
+            html: logoHtml +"<p>En FRUTWEB protegemos tus datos. Según el RGPD, te informamos que tus datos solo se usarán para gestionar tus pedidos y, si lo aceptas, enviarte ofertas exclusivas.</p>"
+        },
+        'terminos': {
+            titulo: "Términos y Condiciones",
+            html: logoHtml +"<ul><li>Los pedidos se entregan en 24/48h.</li><li>Envío gratuito a partir de 30€.</li><li>Si el producto no llega fresco, te devolvemos el dinero.</li></ul>"
+        },
+        'avisolegal': {
+            titulo: "Aviso Legal",
+            html: logoHtml + "<p>Todo el contenido de este sitio web es propiedad de FRUTWEB y está protegido por la normativa vigente.</p><p>Queda prohibida la reproducción total o parcial sin autorización.</p>"
+        }
+    };
+
+    if (contenidos[tipo]) {
+        titulo.innerText = contenidos[tipo].titulo;
+        texto.innerHTML = contenidos[tipo].html;
+        modal.style.display = "flex";
+    }
+}
+
+function cerrarInfoLegal() {
+    document.getElementById("modalLegal").style.display = "none";
+}
+
+// Cerrar si se hace clic fuera del contenido blanco
+window.onclick = function(event) {
+    const modal = document.getElementById("modalLegal");
+    if (event.target == modal) {
+        modal.style.display = "none";
     }
 }

@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FRUTWEB - Tu Frutería Online</title>
-    <link rel="stylesheet" href="Styles.css">
+    <link rel="stylesheet" href="css/Styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <nav class="navbar">
         <div class="logo"><img src="Imagenes/Frutweb logo.png" alt="FRUTWEB"></div>
         <ul class="nav-links">
-            <li><a href="home.html">INICIO</a></li>
-            <li><a href="home.html">FRUTA</a></li>
-            <li><a href="home.html">COMBO</a></li>
-            <li><a href="home.html">VERDURA</a></li>
+            <li><a href="index.html">INICIO</a></li>
+            <li><a href="index.html">FRUTA</a></li>
+            <li><a href="index.html">COMBO</a></li>
+            <li><a href="index.html">VERDURA</a></li>
         </ul>
         <div class="nav-icons">
             <i class="fa-regular fa-heart"></i>
@@ -40,27 +40,27 @@
         <div class="product-grid">
             <div class="product-card">
                 <img src="Imagenes/fresa.jpg" alt="Fresa">
-                <h3>FRESA</h3>
+                <h3>FRESA 12 €</h3>
                 <p>De Valsequillo km 0</p>
                 <button class="add-btn" onclick="openModal('login')">AÑADIR</button>
             </div>            
         <div class="product-card">
             <img src="Imagenes/manzanas.avif" alt="Manzanas">
-            <h3>MANZANAS</h3>
+            <h3>MANZANAS 4 €</h3>
             <p>De valleseco</p>
             <button class="add-btn" onclick="openModal('login')">AÑADIR</button>
           
         </div>
         <div class="product-card">
             <img src="Imagenes/kiwi.avif" alt="Kiwis">
-            <h3>KIWIS</h3>
+            <h3>KIWIS 3,5 €</h3>
             <p>Fresquisimos</p>
             <button class="add-btn" onclick="openModal('login')">AÑADIR</button>
 
         </div>
         <div class="product-card">
             <img src="Imagenes/uvas.avif" alt="Uvas">
-            <h3>Uvas</h3>
+            <h3>Uvas 3€</h3>
             <p>De Lanzarote</p>
             <button class="add-btn" onclick="openModal('login')">AÑADIR</button>
 
@@ -72,25 +72,25 @@
         <div class="product-grid">
             <div class="product-card">
                 <img src="Imagenes/papas.avif" alt="Papas">
-                <h3>Papas</h3>
+                <h3>Papas 1,5€</h3>
                 <p>Papas de la huerta Canaria</p>
                <button class="add-btn" onclick="openModal('login')">AÑADIR</button>
             </div>            
         <div class="product-card">
             <img src="Imagenes/cebollas.avif" alt="Cebollas">
-            <h3>CEBOLLAS</h3>
+            <h3>CEBOLLAS 2€</h3>
             <p>Cebolla de Gáldar</p>
            <button class="add-btn" onclick="openModal('login')">AÑADIR</button>
         </div>
         <div class="product-card">
             <img src="Imagenes/batatas.avif" alt="Batatas">
-            <h3>BATATAS</h3>
+            <h3>BATATAS 2,5 €</h3>
             <p>De km 0 a tu puchero</p>
            <button class="add-btn" onclick="openModal('login')">AÑADIR</button>
         </div>
         <div class="product-card">
             <img src="Imagenes/coliflor.avif" alt="Coliflor">
-            <h3>COLIFLOR</h3>
+            <h3>COLIFLOR 4,5€</h3>
             <p>Recién Cosechada</p>
            <button class="add-btn" onclick="openModal('login')">AÑADIR</button>
         </div>
@@ -170,19 +170,25 @@
     </div>
     </div>
        </div>
- 
+       <div id="notificacion-frutweb" class="toast-personalizado">
+    <div class="toast-content">
+        <img src="../Imagenes/Frutweb logo.png" alt="Logo" class="toast-logo">
+        <p id="toast-mensaje">¡Añadido con éxito!</p>
+    </div>
+    </div>
 
     <footer class="footer">
         <div class="footer-cols">
             <div class="col">
                 <h4>Explorar</h4>
                 <ul>
-                    <li>Inicio</li>
-                    <li>Nuestra compañía</li>
-                    <li>Política de privacidad</li>
-                    <li>Términos y condiciones</li>
+                    <li><a href="/index.html" style="color:inherit; text-decoration:none;">Inicio</a></li>
+                    <li onclick="abrirInfoLegal('compania')" class="footer-link">Nuestra compañía</li>
+                    <li onclick="abrirInfoLegal('privacidad')" class="footer-link">Política de privacidad</li>
+                    <li onclick="abrirInfoLegal('terminos')" class="footer-link">Términos y condiciones</li>
                 </ul>
             </div>
+           
             <div class="col">
                 <h4>Síguenos</h4>
                 <div class="socials">
@@ -199,8 +205,18 @@
                 <p><i class="fa-solid fa-phone"></i> 666123456</p>
             </div>
         </div>
-        <p class="copy">Copyright © Frutweb - <a href="#">Aviso Legal</a></p>
+        <p class="copy">Copyright © Frutweb -
+        <a href="javascript:void(0)" onclick="abrirInfoLegal('avisolegal')">Aviso Legal</a></p>
+        
     </footer>
+        <div id="modalLegal" class="modal">
+                <div class="modal-content" style="max-width: 600px; text-align: left;">
+                <span class="close-btn" onclick="cerrarInfoLegal()">&times;</span>
+                <h2 id="legalTitulo" style="color: #2e7d32; margin-bottom: 15px;"></h2>
+                <div id="legalTexto" style="max-height: 400px; overflow-y: auto; line-height: 1.6;">
+                </div>
+            </div>
+        </div>
     <script src="script.js"></script>
     <script>
     
