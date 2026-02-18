@@ -507,20 +507,61 @@ function cambiarCantidad(id, operacion) {
         cargarCarrito(); // Recargamos la vista
     }
 }
+function abrirCheckout() {
+    document.getElementById("checkoutModal").style.display = "flex";
+}
 
-async function enviarPedidoAlBackend() {
+function cerrarCheckout() {
+    document.getElementById("checkoutModal").style.display = "none";
+}
+
+function confirmarPedido() {
+    const telefono = document.getElementById("telefono").value.trim();
+    const calle = document.getElementById("calle").value.trim();
+    const numero = document.getElementById("numero").value.trim();
+    const piso = document.getElementById("piso").value.trim();
+    const cp = document.getElementById("cp").value.trim();
+    const poblacion = document.getElementById("poblacion").value.trim();
+
+    // Validar que todos los campos estén completos
+    if (!telefono || !calle || !numero || !piso || !cp || !poblacion) {
+        mostrarToast("Debes completar todos los campos de envío");
+        return;
+    }
+
+    // Validación de teléfono
+    if (!/^[0-9]{9}$/.test(telefono)) {
+        mostrarToast("Teléfono no válido");
+        return;
+    }
+
+    const direccion = `${calle}, ${numero}, ${piso}, ${cp}, ${poblacion}`;
+
+    localStorage.setItem("telefono", telefono);
+    localStorage.setItem("direccion", direccion);
+
+    cerrarCheckout();
+
+    // Enviar al backend con la dirección ya concatenada
+    enviarPedidoAlBackend(telefono, direccion);
+}
+
+async function enviarPedidoAlBackend(telefono, direccion) {
     const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
     const token = localStorage.getItem("token");
 
+     if (!telefono || !direccion) {return mostrarAvisoFrutweb("Faltan datos de envío", "aviso"); }
+
+    if (!/^[0-9]{9}$/.test(telefono)) { return mostrarAvisoFrutweb("Teléfono no válido", "aviso");}
     if (carrito.length === 0) return mostrarAvisoFrutweb("El carrito está vacío");
     if (!token) {
         mostrarAvisoFrutweb("Inicia sesión para comprar", "aviso");
-        setTimeout(() => window.location.href = "/index.html", 2000);
+        setTimeout(() => window.location.href = "/index.html", 5000);
         return;
     }
 
     const total = carrito.reduce((acc, p) => acc + Number(p.precio) * p.cantidad, 0);
-    const datosPedido = { carrito, total };
+    const datosPedido = { carrito, total, telefono,direccion};
 
     try {
         const response = await fetch("http://localhost:3000/api/pedidos/finalizar", {
@@ -552,7 +593,7 @@ async function enviarPedidoAlBackend() {
             if (countEl) countEl.innerText = "0";
 
             mostrarAvisoFrutweb("¡Compra realizada con éxito! 🎉");
-            setTimeout(() => window.location.href = "/index.html", 2500);
+            setTimeout(() => window.location.href = "/pages/shop/venta.html", 4500);
         } else {
             mostrarAvisoFrutweb("Error: " + (data.error || data.mensaje || "No se pudo procesar"), "eliminar");
         }

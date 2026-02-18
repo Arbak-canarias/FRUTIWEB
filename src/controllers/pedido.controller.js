@@ -3,11 +3,18 @@ import DetallePedido from '../models/detallePedido.model.js';
 import { pool } from '../config/db.js';
 
 export const crearPedido = async (req, res) => {
-    const { carrito, total } = req.body;
+    const { carrito, total,telefono,direccion } = req.body;
     const id_usuario = req.user.id; 
     
     try {
-        const resultadoPedido = await Pedido.crear(id_usuario, total);
+         if (!telefono || !direccion) {
+            return res.status(400).json({ error: "Faltan datos de envío" });
+        }
+
+        if (!/^[0-9]{9}$/.test(telefono)) {
+            return res.status(400).json({ error: "Teléfono no válido" });
+        }
+        const resultadoPedido = await Pedido.crear(id_usuario, total,telefono,direccion);
         const id_pedido = resultadoPedido.insertId;
 
         const promesas = carrito.map(item => 
@@ -35,14 +42,25 @@ export const finalizarPedido = async (req, res) => {
     try {
         await connection.beginTransaction();
 
-        const { carrito, total } = req.body;
+        const { carrito, total,telefono, direccion } = req.body;
         const id_usuario = req.user.id;
+         if (!telefono || !direccion) {
+            throw new Error("Faltan datos de envío");
+        }
+
+        if (!/^[0-9]{9}$/.test(telefono)) {
+            throw new Error("Teléfono no válido");
+        }
+        
+        if (!carrito || carrito.length === 0) {
+            throw new Error("El carrito está vacío");
+        }
 
         // 1. Crear pedido
         const [resultPedido] = await connection.execute(
-            `INSERT INTO pedido (id_usuario, total, estado, u_creacion, fecha)
-             VALUES (?, ?, 'pendiente', ?, NOW())`,
-            [id_usuario, total, id_usuario]
+            `INSERT INTO pedido (id_usuario, total, estado, telefono, direccion, u_creacion, fecha)
+            VALUES (?, ?, 'pendiente', ?, ?, ?, NOW())`,
+            [id_usuario, total, telefono, direccion, id_usuario]
         );
 
         const id_pedido = resultPedido.insertId;
@@ -61,7 +79,21 @@ export const finalizarPedido = async (req, res) => {
             }
 
             if (producto[0].stock < item.cantidad) {
-                throw new Error(`Stock insuficiente`);
+                const [producto] = await connection.execute(
+                    `SELECT nombre, stock, precio FROM producto WHERE id_producto = ?`,
+                    [item.id_producto]
+                );
+
+                if (producto.length === 0) {
+                    throw new Error(`Producto con ID ${item.id_producto} no existe`);
+                }
+
+                const productoInfo = producto[0];
+
+                if (productoInfo.stock < item.cantidad) {
+                    throw new Error(`Stock insuficiente para "${productoInfo.nombre}". Stock disponible: ${productoInfo.stock}, cantidad solicitada: ${item.cantidad}`);
+                }
+                
             }
 
             const precioReal = producto[0].precio;
@@ -113,6 +145,8 @@ export const obtenerPedidos = async (req, res) => {
                 u.nombre AS cliente,
                 p.estado,
                 p.total,
+                p.telefono,
+                p.direccion,
                 dp.cantidad,
                 dp.precio_unitario,
                 pr.nombre AS producto,
@@ -166,7 +200,7 @@ export const obtenerPedidosPorUsuario = async (req, res) => {
 
     try {
         const [pedidos] = await pool.execute(
-            `SELECT id_pedido, total, fecha, estado 
+            `SELECT id_pedido, total, fecha, estado, telefono, direccion
              FROM pedido 
              WHERE id_usuario = ? 
              ORDER BY fecha DESC`,
@@ -188,6 +222,8 @@ export const obtenerPedidosPorUsuario = async (req, res) => {
                     total: pedido.total,
                     fecha: pedido.fecha,
                     estado: pedido.estado,
+                    telefono:pedido.telefono,
+                    direccion:pedido.direccion,
                     items: detalles
                 };
             })

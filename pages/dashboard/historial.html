@@ -22,6 +22,8 @@
                     <th>Fecha</th>
                     <th>Total</th>
                     <th>Productos</th>
+                    <th>Teléfono</th> 
+                    <th>Dirección</th>
                     <th>Estado</th>
                 </tr>
             </thead>
@@ -77,6 +79,8 @@
                 <td>
                     ${(pedido.items || []).map(item => `${item.cantidad} x ${item.nombre}`).join("<br>")}
                 </td>
+                <td>${pedido.telefono || "-"}</td> <!-- mostrar teléfono -->
+                <td>${pedido.direccion || "-"}</td> 
                 <td>${pedido.estado || "pendiente"}</td>
             `;
 

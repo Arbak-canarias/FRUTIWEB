@@ -862,3 +862,23 @@ background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)),
 }
 
 .add-btn:hover { transform: scale(1.05); }
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px; /* espacio entre campos */
+}
+
+/* Inputs generales */
+.input-form {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box; /* para que el padding no rompa el ancho */
+}
+
+/* Hacer la caja de dirección más grande */
+.direccion-input {
+    height: 100px; /* más alta que un input normal */
+}
