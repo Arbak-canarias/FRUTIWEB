@@ -525,13 +525,13 @@ function confirmarPedido() {
 
     // Validar que todos los campos estén completos
     if (!telefono || !calle || !numero || !piso || !cp || !poblacion) {
-        mostrarToast("Debes completar todos los campos de envío");
+        mostrarAvisoFrutweb("Debes completar todos los campos de envío");
         return;
     }
 
     // Validación de teléfono
     if (!/^[0-9]{9}$/.test(telefono)) {
-        mostrarToast("Teléfono no válido");
+        mostrarAvisoFrutweb("Teléfono no válido");
         return;
     }
 
